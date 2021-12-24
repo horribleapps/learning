@@ -1,9 +1,10 @@
 
 
 var dv = document.getElementsByTagName('div');
-console.log(dv[1].innerText);
-var temp=dv[2];
+var idx=2;
+console.log(dv[idx].innerText);
 
+var temp=dv[idx];
 var container = temp;
 var dragItem=temp;
 var active = false;
@@ -13,7 +14,7 @@ var initialX;
 var initialY;
 var xOffset = 0;
 var yOffset = 0;
-console.log("hello");
+
 
 temp.addEventListener("touchstart", dragStart, false);
 temp.addEventListener("touchend", dragEnd, false);
@@ -31,6 +32,7 @@ function dragStart(e) {
     initialX = e.clientX - xOffset;
     initialY = e.clientY - yOffset;
   }
+  
 
   if (e.target === temp) {
     active = true;
@@ -40,7 +42,8 @@ function dragStart(e) {
 function dragEnd(e) {
   initialX = currentX;
   initialY = currentY;
-
+  console.log(e);
+ 
   active = false;
 }
 

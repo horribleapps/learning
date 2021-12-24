@@ -11,6 +11,7 @@
     height: 640px;
     margin: 20px;
     border: 25px solid #333;
+    
 }
 .black {
     float: left;
@@ -21,6 +22,7 @@
     text-align:center;
     display: table-cell;
     vertical-align:middle;
+    position: relative;
 }
 .white {
     float: left;
@@ -31,6 +33,30 @@
     text-align:center;
     display: table-cell;
     vertical-align:middle;
+    position: relative;
+}
+.chesspc {
+    float: left;
+    width: 80px;
+    height: 80px;
+    background-color: transparent;
+    font-size:50px;
+    text-align:center;
+    display: table-cell;
+    vertical-align:middle;
+    position: relative;
+}
+.pc {
+    float: left;
+    width: 80px;
+    height: 80px;
+    background-color:transparent;
+    font-size:50px;
+    text-align:center;
+    display: table-cell;
+    vertical-align:middle;
+    z-index:1;
+    position:relative;
 }
 
 </style>
@@ -38,83 +64,89 @@
 </head>
 
 <body>
->
+
 <div class="chessboard">
 <!-- 1st -->
-<div class="white" draggable="true">&#9820;</div>
-<div class="black" draggable="true">&#9822;</div>
-<div class="white" draggable="true">&#9821;</div>
-<div class="black"  draggable="true">&#9819;</div>
-<div class="white"  draggable="true">&#9818;</div>
-<div class="black"  draggable="true">&#9821;</div>
-<div class="white"  draggable="true">&#9822;</div>
-<div class="black"  draggable="true">&#9820;</div>
+<div class="white" ><div class="pc">&#9820;</div></div>
+
+<div class="black" ><div class="pc" >&#9822;</div></div>
+
+<div class="white" ><div class="pc" >&#9821;</div></div>
+
+<div class="black" ><div class="pc" >&#9819;</div></div>
+
+<div class="white" ><div class="pc" >&#9818;</div></div>
+
+<div class="black" ><div class="pc" >&#9821;</div></div>
+
+<div class="white" ><div class="pc" >&#9822;</div></div>
+
+<div class="black" ><div class="pc" >&#9820;</div></div>
+
 <!-- 2nd -->
-<div class="black"  draggable="true">&#9821;</div>
-<div class="white"  draggable="true">&#9821;</div>
-<div class="black"  draggable="true">&#9821;</div>
-<div class="white"  draggable="true">&#9821;</div>
-<div class="black"  draggable="true">&#9821;</div>
-<div class="white"  draggable="true">&#9821;</div>
-<div class="black"  draggable="true">&#9821;</div>
-<div class="white"  draggable="true">&#9821;</div>
+<div class="black" ><div class="pc" ><div class="chesspc">&#9823;</div></div></div>
+<div class="white" ><div class="pc" >&#9823;</div></div>
+<div class="black" ><div class="pc" >&#9823;</div></div>
+<div class="white" ><div class="pc" >&#9823;</div></div>
+<div class="black" ><div class="pc" >&#9823;</div></div>
+<div class="white" ><div class="pc" >&#9823;</div></div>
+<div class="black" ><div class="pc" >&#9823;</div></div>
+<div class="white" ><div class="pc" >&#9823;</div></div>
 <!-- 3th -->
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
 <!-- 4st -->
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
 <!-- 5th -->
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
 <!-- 6th -->
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
-<div class="black"  draggable="true"></div>
-<div class="white"  draggable="true"></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
+<div class="black" ></div>
+<div class="white" ></div>
 <!-- 7th -->
-<div class="white"  draggable="true">&#9817;</div>
-<div class="black"  draggable="true">&#9817;</div>
-<div class="white"  draggable="true">&#9817;</div>
-<div class="black"  draggable="true">&#9817;</div>
-<div class="white"  draggable="true">&#9817;</div>
-<div class="black"  draggable="true">&#9817;</div>
-<div class="white"  draggable="true">&#9817;</div>
-<div class="black"  draggable="true">&#9817;</div>
+<div class="white" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9817;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9817;</div></div>
 <!-- 8th -->
-<div class="black"  draggable="true">&#9814;</div>
-<div class="white"  draggable="true">&#9816;</div>
-<div class="black"  draggable="true">&#9815;</div>
-<div class="white"  draggable="true">&#9813;</div>
-<div class="black"  draggable="true">&#9812;</div>
-<div class="white"  draggable="true">&#9815;</div>
-<div class="black"  draggable="true">&#9816;</div>
-<div class="white"  draggable="true">&#9814;</div>
+<div class="black" ><div class="pc" draggable="false">&#9814;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9816;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9815;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9813;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9812;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9815;</div></div>
+<div class="black" ><div class="pc" draggable="false">&#9816;</div></div>
+<div class="white" ><div class="pc" draggable="false">&#9814;</div></div>
 </div>
-
-
 
     <script src="js/chess.js" ></script
 </body>
