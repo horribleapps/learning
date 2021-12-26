@@ -129,6 +129,7 @@ def nmask(brd,msk,pm,bm,pc,plr):
     msk[~bm]=False# removing all things beyond the chess board
     #print(msk[lo:hi,lo:hi].astype('int8'))
     #print(pm[lo:hi,lo:hi].astype('int8'))
+    brd,pm=plrmat(brd,pm)
     return brd,msk,pc,plr,pm,bm
 
 def botpc(pm,p,msk,x,y,ogp):
@@ -203,6 +204,7 @@ def rmask(brd,msk,pm,bm,pc,plr):
     #left of pc
     msk=lftpc(pm,plr,msk,x,y,False)
     msk[~bm]=False
+    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
     return brd,msk,pc,plr,pm,bm
 
@@ -262,6 +264,7 @@ def bmask(brd,msk,pm,bm,pc,plr):
     #flip mats back
     brd,msk,pm,bm=flipmat(msk,pm,bm,brd)
     msk[~bm]=False
+    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
     return brd,msk,pc,plr,pm,bm
 
@@ -270,6 +273,8 @@ def qmask(brd,msk,pm,bm,pc,plr):
     brd,msk,pc,plr,pm,bm = bmask(brd,msk,pm,bm,pc,plr)
     disp(brd,bm,pm,msk)
     brd,msk,pc,plr,pm,bm = rmask(brd,msk,pm,bm,pc,plr)
+    msk[~bm]=False
+    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
     return brd,msk,pc,plr,pm,bm
 
@@ -280,9 +285,31 @@ def kmask(brd,msk,pm,bm,pc,plr):
     msk[x-1:x+2,y-1:y+2]=True
     msk[x-1:x+2,y-1:y+2][ pm[x-1:x+2,y-1:y+2]==plr ] = False
     msk[~bm]=False
+    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
     return brd,msk,pc,plr,pm,bm
 
+def pmask(brd,msk,pm,bm,pc,plr):
+    print("inside rmask")
+    othplr = 2 if plr==1 else 1
+    x,y,pm,pc,brd,msk = updatebrd(msk,brd,pc,pm)
+    if plr==1:
+        msk[x+1,y] = True if pm[x+1,y]==0 else False
+        if pm[x+1,y+1]==othplr:
+            msk[x+1,y+1]=True
+        if pm[x+1,y-1]==othplr:
+            msk[x+1,y-1]=True
+
+    elif plr==2:
+        msk[x-1,y][pm[x-1,y]==0]=True
+        if pm[x-1,y+1]==othplr:
+            msk[x-1,y+1]=True
+        if pm[x-1,y-1]==othplr:
+            msk[x-1,y-1]=True
+    msk[~bm]=False
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk)
+    return brd,msk,pc,plr,pm,bm
 
 def test_knight():
     #testing knight
@@ -292,7 +319,6 @@ def test_knight():
     pc='n11'
     plr=1
     brd,msk,pc,plr,pm,bm=nmask(brd,msk,pm,bm,pc,plr)
-    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
 
 def test_rook():
@@ -306,7 +332,6 @@ def test_rook():
     brd[lo+3][lo+1]='b11'
     brd,pm=plrmat(brd,pm)
     brd,msk,pc,plr,pm,bm=rmask(brd,msk,pm,bm,pc,plr)
-    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
 
 def test_bishop():
@@ -320,7 +345,6 @@ def test_bishop():
     brd[lo+4][lo+3]='b11'
     brd,pm=plrmat(brd,pm)
     brd,msk,pc,plr,pm,bm=bmask(brd,msk,pm,bm,pc,plr)
-    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)
 
 def test_queen():
@@ -335,7 +359,6 @@ def test_queen():
     brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk) 
     brd,msk,pc,plr,pm,bm=qmask(brd,msk,pm,bm,pc,plr)
-    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk)    
 
 def test_king():
@@ -350,8 +373,23 @@ def test_king():
     brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk) 
     brd,msk,pc,plr,pm,bm=kmask(brd,msk,pm,bm,pc,plr)
-    brd,pm=plrmat(brd,pm)
     disp(brd,bm,pm,msk) 
+
+def test_pawn():
+    #testing pawn
+    msk,brd,pm,bm=chessbrd()
+    pc='p12'
+    plr=1
+    brd[lo+3][lo+2]='p12'
+    brd[lo+1][lo+2]='000'
+    brd[lo+0][lo+4]='000'
+    brd[lo+4][lo+3]='k11'
+    brd[lo+4][lo+1]='p21'
+    brd[lo+6][lo+1]='000'
+    brd,pm=plrmat(brd,pm)
+    brd,msk,pc,plr,pm,bm=pmask(brd,msk,pm,bm,pc,plr)
+    disp(brd,bm,pm,msk) 
+
 
 def main():
     if len(sys.argv)>1:
@@ -363,7 +401,8 @@ def main():
     #test_rook()
     #test_bishop()
     #test_queen()
-    test_king()
+    #test_king()
+    test_pawn()
 
 
 if __name__ == "__main__":
