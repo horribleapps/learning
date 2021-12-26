@@ -75,6 +75,10 @@ def disp(brd,bm,pm,msk):
     print(bm.astype('int8'))
     print("chess board")
     print(brd[lo:hi,lo:hi])
+    print("pm cutdown")
+    print(pm[lo:hi,lo:hi].astype('int8'))
+    print("mask cutdown")
+    print(msk[lo:hi,lo:hi].astype('int8'))
 
 def chessbrd():
     global dbg
@@ -94,6 +98,14 @@ def chessbrd():
     disp(brd,bm,pm,msk)
     return msk,brd,pm,bm
 
+def updatebrd(msk,brd,pc,pm):
+    msk[brd==pc]=True
+    pm[brd==pc] =3 #setting current pc to 3
+    ploc=np.where(brd==pc)#location of the piece
+    x=ploc[0][0]
+    y=ploc[1][0]  
+    return x,y,pm,pc,brd,msk 
+
 def nmask(brd,msk,pm,bm,pc,plr):
     '''
     brd: chess board
@@ -102,12 +114,7 @@ def nmask(brd,msk,pm,bm,pc,plr):
     plr: player
     '''
     print("inside nmask")
-
-    msk[brd==pc]=True
-    ploc=np.where(brd==pc)#location of the piece
-    x=ploc[0][0]
-    y=ploc[1][0]
-    print((x-lo,y-lo))
+    x,y,pm,pc,brd,msk =updatebrd(msk,brd,pc,pm)
     # where knight can go
     msk[x+2,y+1]=True
     msk[x-2,y-1]=True
@@ -118,94 +125,233 @@ def nmask(brd,msk,pm,bm,pc,plr):
     msk[x-1,y+2]=True
     msk[x+1,y-2]=True
     #removing pcs from the same player
-    
+    msk[(pm!=3)&(pm==plr)&(msk==True)]=False
     msk[~bm]=False# removing all things beyond the chess board
-    print(msk[lo:hi,lo:hi].astype('int8'))
-    pdb.set_trace()
+    #print(msk[lo:hi,lo:hi].astype('int8'))
+    #print(pm[lo:hi,lo:hi].astype('int8'))
     return brd,msk,pc,plr,pm,bm
-    '''
-    print(llist)
-    llist=[[x,y] for x,y in llist if ((x>=0 and x<9) and (y>=0 and y<8))]#list of all locations that are not beyond the board
-    #this ignores if there is a piece in the way or not
-    print(llist)
-    xlist=[h[0] for h in llist]
-    ylist=[h[1] for h in llist]
-    print(xlist)
-    print(ylist)
-    msk[xlist,ylist]=True
-    print(msk.astype('int8'))
-    msk=updatemsk(brd,msk,pc,plr)
-    '''
 
-def rmask(brd,msk,pc,plr):
+def botpc(pm,p,msk,x,y,ogp):
+    #below the pc
+    b1=np.where(pm[x:,y] == p )[0]
+    if len(b1) > 0 and ogp:
+        b1=b1[0]+x+1
+        msk[b1:,y]=False
+    elif len(b1) > 0 and not ogp:
+        b1=b1[0]+x
+        msk[b1:,y]=False
+    return msk
+
+def abvpc(pm,p,msk,x,y,ogp):
+    a1=np.where(pm[:x,y] == p )[0]
+    if len(a1) > 0 and ogp:
+        a1=a1[-1]
+        msk[:a1,y]=False
+    elif len(a1) > 0 and not ogp:
+        a1=a1[-1]+1
+        msk[:a1,y]=False
+    return msk
+
+def rgtpc(pm,p,msk,x,y,ogp):
+    r1=np.where(pm[x,y:] == p )[0]
+    if len(r1) > 0 and ogp:
+        r1=r1[0]+y+1
+        msk[x,r1:]=False
+    elif len(r1) > 0 and not ogp:
+        r1=r1[0]+y
+        msk[x,r1:]=False
+    return msk
+
+def lftpc(pm,p,msk,x,y,ogp):
+    l1=np.where(pm[x,:y] == p )[0]
+    if len(l1) > 0 and ogp:
+        l1=l1[-1]
+        msk[x,:l1]=False
+    elif len(l1) > 0 and not ogp:
+        l1=l1[-1]+1
+        msk[x,:l1]=False
+    return msk
+
+def rmask(brd,msk,pm,bm,pc,plr):
     '''
     brd: chess board
     msk: mask
     pc: chess piece of interest
     plr: player
     '''
-    print(rmask)
-    msk[:,:]=False
-    msk[brd==pc]=True
-    ploc=np.where(brd==pc)#location of the piece
-    x=ploc[0][0]
-    y=ploc[1][0]
+    print("inside rmask")
+    othplr = 2 if plr==1 else 1
+    x,y,pm,pc,brd,msk = updatebrd(msk,brd,pc,pm)
     msk[x,:]=True
-    msk[:,y]=True
-    msk=updatemsk(brd,msk,pc,plr)
-    trck=-1
-    
-    if x+1<8:
-        for i in np.arange(x+1,np.shape(msk)[1]):
-            tmp=brd[i,y]
-            if ((tmp[1] not in plr) and (trck==-1) and (tmp not in '000')):
-                trck=i 
-            elif (tmp[1] not in plr) and (i>trck) and (tmp not in '000'):
-                msk[i,y]=False
-    elif x-1>-1:
-        for i in np.arange(x-1,0):
-            tmp=brd[i,y]
-            if ((tmp[1] not in plr) and (trck==-1) and (tmp not in '000')):
-                trck=i 
-            elif (tmp[1] not in plr) and (i<trck) and (tmp not in '000'):
-                msk[i,y]=False
-    if y+1<8:
-        for i in np.arange(y+1,np.shape(msk)[1]):
-            tmp=brd[x,i]
-            if ((tmp[1] not in plr) and (trck==-1) and (tmp not in '000')):
-                trck=i 
-            elif (tmp[1] not in plr) and (i>trck) and (tmp not in '000'):
-                msk[x,i]=False
-    elif y-1>-1:
-        for i in np.arange(y-1,0):
-            tmp=brd[x,i]
-            if ((tmp[1] not in plr) and (trck==-1) and (tmp not in '000')):
-                trck=i 
-            elif (tmp[1] not in plr) and (i<trck) and (tmp not in '000'):
-                msk[x,i]=False
-    #pdb.set_trace()
-    #msk[ np.where(msk[x,:]==False)[0][0]:,: ]=False
-    #msk[ np.where(msk[:,y]==False)[0][0] ]=False
-    return brd,msk,pc,plr
+    msk[:,y]=True    
+    #removing 2nd player parts
+    #below the pc
+    msk=botpc(pm,othplr,msk,x,y,True)
+    #above the pc
+    msk=abvpc(pm,othplr,msk,x,y,True)
+    #right of pc
+    msk=rgtpc(pm,othplr,msk,x,y,True)
+    #left of pc
+    msk=lftpc(pm,othplr,msk,x,y,True)
+    #removing orig player parts
+    #below the pc
+    msk=botpc(pm,plr,msk,x,y,False)
+    #above the pc
+    msk=abvpc(pm,plr,msk,x,y,False)
+    #right of pc
+    msk=rgtpc(pm,plr,msk,x,y,False)
+    #left of pc
+    msk=lftpc(pm,plr,msk,x,y,False)
+    msk[~bm]=False
+    disp(brd,bm,pm,msk)
+    return brd,msk,pc,plr,pm,bm
 
-def updatemsk(brd,msk,pc,plr):
-    print("inside update msk")
-    othplr='2' if plr=='1' else '1'
-    temp=np.zeros((8,8)).astype('bool')
-    temp[brd=='000']=True
-    temp[brd!='000']=False
-    temp[brd==pc]=True
-    othplrlist=[s for s in brd[msk] if s[1]==othplr]
-    msk=msk&temp
-    print('msk b4 player compensation')
-    print(msk.astype('int8'))
-    othplrloc=[np.where(brd==oth) for oth in othplrlist]
-    xlist=[h[0] for h in othplrloc]
-    ylist=[h[1] for h in othplrloc]
-    msk[xlist,ylist]=True
-    print('msk after player compensation')
-    print(msk.astype('int8'))
+def brpc(pm,p,msk,x,y,ogp):
+    row,col=np.diag_indices_from(msk[x:x+8,y:y+8])
+    msk[x+row,y+col]=True
+    br1 = np.where(pm[x+row,y+col]==p)[0]
+    if len(br1) > 0 and ogp:
+        br1=br1[0]
+        msk[ x+row[br1:],y+col[br1:] ] = False
+    elif len(br1) > 0 and not ogp:
+        br1=br1[0]+1
+        msk[ x+row[br1:],y+col[br1:] ] = False
     return msk
+
+def tlpc(pm,p,msk,x,y,ogp):
+    row,col=np.diag_indices_from(msk[x-8:x,y-8:y])
+    msk[x-8+row,y-8+col]=True
+    lt1 = np.where(pm[x-8+row,y-8+col])[0]
+    if len(lt1) > 0 and ogp:
+        lt1=lt1[-1]
+        msk[ x-8+row[:lt1], y-8+col[:lt1] ] = False
+    elif len(lt1) > 0 and not ogp:
+        lt1=lt1[-1]+1
+        msk[ x-8+row[:lt1], y-8+col[:lt1] ] = False
+    return msk
+
+def flipmat(msk,pm,bm,brd):
+    brd= np.fliplr(brd)
+    msk= np.fliplr(msk)
+    pm = np.fliplr(pm)
+    bm = np.fliplr(bm)
+    return brd,msk,pm,bm
+
+def diagmskupdate(pm,othplr,msk,x,y):
+    msk=brpc(pm,othplr,msk,x,y,True)
+    msk=tlpc(pm,othplr,msk,x,y,True)
+    #for the original player
+    msk=brpc(pm,othplr,msk,x,y,False)
+    msk=tlpc(pm,othplr,msk,x,y,False)
+    return msk,pm,othplr,msk,x,y
+
+def bmask(brd,msk,pm,bm,pc,plr):
+    print("inside bmask")
+    #print(msk[lo:hi,lo:hi].astype('int8'))
+    othplr = 2 if plr==1 else 1
+    x,y,pm,pc,brd,msk = updatebrd(msk,brd,pc,pm)
+    msk,pm,othplr,msk,x,y=diagmskupdate(pm,othplr,msk,x,y)
+
+    #flip mat
+    brd,msk,pm,bm=flipmat(msk,pm,bm,brd)
+    #flip mats left to right to get tr to work
+    othplr = 2 if plr==1 else 1
+    x,y,pm,pc,brd,msk = updatebrd(msk,brd,pc,pm)
+    msk,pm,othplr,msk,x,y=diagmskupdate(pm,othplr,msk,x,y)
+
+    #flip mats back
+    brd,msk,pm,bm=flipmat(msk,pm,bm,brd)
+    msk[~bm]=False
+    disp(brd,bm,pm,msk)
+    return brd,msk,pc,plr,pm,bm
+
+def qmask(brd,msk,pm,bm,pc,plr):
+    print("inside queen")
+    brd,msk,pc,plr,pm,bm = bmask(brd,msk,pm,bm,pc,plr)
+    disp(brd,bm,pm,msk)
+    brd,msk,pc,plr,pm,bm = rmask(brd,msk,pm,bm,pc,plr)
+    disp(brd,bm,pm,msk)
+    return brd,msk,pc,plr,pm,bm
+
+def kmask(brd,msk,pm,bm,pc,plr):
+    print("inside rmask")
+    othplr = 2 if plr==1 else 1
+    x,y,pm,pc,brd,msk = updatebrd(msk,brd,pc,pm)
+    msk[x-1:x+2,y-1:y+2]=True
+    msk[x-1:x+2,y-1:y+2][ pm[x-1:x+2,y-1:y+2]==plr ] = False
+    msk[~bm]=False
+    disp(brd,bm,pm,msk)
+    return brd,msk,pc,plr,pm,bm
+
+
+def test_knight():
+    #testing knight
+    msk,brd,pm,bm=chessbrd()
+    brd[lo+3][lo+2]='n11'
+    brd[lo+0][lo+1]='000'
+    pc='n11'
+    plr=1
+    brd,msk,pc,plr,pm,bm=nmask(brd,msk,pm,bm,pc,plr)
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk)
+
+def test_rook():
+    #testing rook
+    msk,brd,pm,bm=chessbrd()
+    pc='r11'
+    plr=1
+    brd[lo+3][lo+2]='r11'
+    brd[lo+0][lo+0]='000'
+    brd[lo+0][lo+2]='000'
+    brd[lo+3][lo+1]='b11'
+    brd,pm=plrmat(brd,pm)
+    brd,msk,pc,plr,pm,bm=rmask(brd,msk,pm,bm,pc,plr)
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk)
+
+def test_bishop():
+    #testing bishop
+    msk,brd,pm,bm=chessbrd()
+    pc='b11'
+    plr=1
+    brd[lo+3][lo+2]='r11'
+    brd[lo+0][lo+0]='000'
+    brd[lo+0][lo+2]='000'
+    brd[lo+4][lo+3]='b11'
+    brd,pm=plrmat(brd,pm)
+    brd,msk,pc,plr,pm,bm=bmask(brd,msk,pm,bm,pc,plr)
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk)
+
+def test_queen():
+    #testing bishop
+    msk,brd,pm,bm=chessbrd()
+    pc='q11'
+    plr=1
+    brd[lo+3][lo+2]='r11'
+    brd[lo+0][lo+0]='000'
+    brd[lo+0][lo+3]='000'
+    brd[lo+4][lo+3]='q11' 
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk) 
+    brd,msk,pc,plr,pm,bm=qmask(brd,msk,pm,bm,pc,plr)
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk)    
+
+def test_king():
+    #testing king
+    msk,brd,pm,bm=chessbrd()
+    pc='k11'
+    plr=1
+    brd[lo+3][lo+2]='r11'
+    brd[lo+0][lo+0]='000'
+    brd[lo+0][lo+4]='000'
+    brd[lo+4][lo+3]='k11' 
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk) 
+    brd,msk,pc,plr,pm,bm=kmask(brd,msk,pm,bm,pc,plr)
+    brd,pm=plrmat(brd,pm)
+    disp(brd,bm,pm,msk) 
 
 def main():
     if len(sys.argv)>1:
@@ -213,32 +359,11 @@ def main():
             dbg=True
         else:
             dbg=False
-    msk,brd,pm,bm=chessbrd()
-    brd[lo+3][lo+2]='n11'
-    brd[lo+0][lo+1]='000'
-    pc='n11'
-    plr=1
-    brd,msk,pc,plr,pm,bm=nmask(brd,msk,pm,bm,pc,plr)
-    pdb.set_trace()
-    '''
-    brd,msk=chessbrd()
-    brd[3][2]='b11'
-    brd[0][2]='000'
-    pc='n11'
-    plr='1'
-    brd,msk,pc,plr=nmask(brd,msk,pc,plr)
-    '''
-    '''
-    #testing rook
-    brd,msk=chessbrd()
-    brd[3][2]='r11'
-    brd[0][0]='000'
-    brd[0][2]='000'
-    brd[3][1]='b11'
-    pc='r11'
-    plr='1'
-    brd,msk,pc,plr=rmask(brd,msk,pc,plr)
-    '''
+    #test_knight()
+    #test_rook()
+    #test_bishop()
+    #test_queen()
+    test_king()
 
 
 if __name__ == "__main__":
