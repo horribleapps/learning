@@ -390,6 +390,23 @@ def test_pawn():
     brd,msk,pc,plr,pm,bm=pmask(brd,msk,pm,bm,pc,plr)
     disp(brd,bm,pm,msk) 
 
+def test_checkmate():
+    #testing pawn
+    msk,brd,pm,bm=chessbrd()
+    pc='k11'
+    plr=1
+    brd[lo+3][lo+2]='p12'
+    brd[lo+1][lo+2]=\
+    brd[lo+6][lo+3]=\
+    brd[lo+6][lo+5]=\
+    '000'
+    brd[lo+0][lo+4]='000'
+    brd[lo+4][lo+3]='k11'
+    brd[lo+4][lo+1]='p21'
+    brd[lo+6][lo+1]='000'
+    brd,pm=plrmat(brd,pm)
+    brd,msk,pc,plr,pm,bm=pmask(brd,msk,pm,bm,pc,plr)
+    disp(brd,bm,pm,msk)     
 
 def main():
     if len(sys.argv)>1:
@@ -402,7 +419,8 @@ def main():
     #test_bishop()
     #test_queen()
     #test_king()
-    test_pawn()
+    #test_pawn()
+    test_checkmate()
 
 
 if __name__ == "__main__":
