@@ -5,7 +5,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 import pdb
-import checkmate as cm
 
 
 dbg=True
@@ -478,8 +477,9 @@ def checkmate2(brd,msk,pm,bm,pc,plr,chmsk):
         return False
     else:
         return True
+    
 
-'''
+
 def t_checkmate_false():
     #testing pawn
     msk,brd,pm,bm=chessbrd()
@@ -532,7 +532,8 @@ def t_checkmate_true():
     chkbool=checkmate2(brd,msk,pm,bm,pc,plr,chmsk)
     disp(brd,bm,pm,msk)     
     print("Checkmate bool:"+str(chkbool))
-'''
+
+
 
 def main():
     if len(sys.argv)>1:
@@ -546,8 +547,8 @@ def main():
     #t_queen()
     #t_king()
     #t_pawn()
-    #cm.t_checkmate_false()
-    cm.t_checkmate_true()
+    #t_checkmate_false()
+    #t_checkmate_true()
 
 
 if __name__ == "__main__":
