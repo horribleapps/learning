@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import sys
 import pdb
 from chess import *
+import checkmate as cm
 
 
 
@@ -235,3 +236,29 @@ def test_pmask():
     ])
     assert np.sum(~(msk[lo:hi,lo:hi]==msktest))+\
             np.sum(~(pm[lo:hi,lo:hi]==pmtest))==0, "masks don't match"
+
+def test_checkmate_false():
+    #testing pawn
+    msk,brd,pm,bm=chessbrd()
+    pc='k11'
+    plr=1
+    brd[lo+3][lo+2]='p12'
+    brd[lo+1][lo+2]=\
+    brd[lo+6][lo+5]=\
+    brd[lo+7][lo+7]=\
+    brd[lo+7][lo+0]=\
+    '000'
+    brd[lo+0][lo+4]='000'
+    brd[lo+4][lo+3]='k11' # place king in middle
+    brd[lo+4][lo+1]='p21' # 
+    brd[lo+6][lo+5]='b22';brd[lo+7][lo+5]='p25'
+    brd[lo+5][lo+0]='r21' #moving rook
+    brd[lo+4][lo+6]='r22'
+    brd[lo+6][lo+1]='000'
+    tbrd,tpm=plrmat(brd,pm)
+    brd,msk,pc,plr,pm,bm,chmsk=cm.checkmate(brd,msk,pm,bm,pc,plr)
+    chkbool=cm.checkmate2(brd,msk,pm,bm,pc,plr,chmsk)
+    assert chkbool==False
+
+
+
