@@ -8,9 +8,6 @@ import pdb
 from chess import *
 
 
-lo=8
-hi=16
-length=24
 
 def dbgchk(mskdict,pmdict,brd,keyOI):
     print(brd[lo:hi,lo:hi])
