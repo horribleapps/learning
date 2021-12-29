@@ -248,8 +248,8 @@ def main():
     #t_queen()
     #t_king()
     #t_pawn()
-    t_checkmate_false()
-    #t_checkmate_true()
+    #t_checkmate_false()
+    t_checkmate_true()
 
 
 
