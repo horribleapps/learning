@@ -9,17 +9,23 @@ import pdb
 
 
 dbg=True
+force=False
 lo=8
 hi=16
 length=24
 
-def print(*args, force=False,**kwargs,):
+
+
+
+
+def print(*args, **kwargs,):
     """My custom print() function."""
     # Adding new arguments to the print function signature 
     # is probably a bad idea.
     # Instead consider testing if custom argument keywords
     # are present in kwargs
     global dbg
+    global force
     if dbg or force:
         __builtin__.print(*args,**kwargs)
     else:
@@ -103,6 +109,7 @@ def updatebrd(msk,brd,pc,pm):
     msk[brd==pc]=True
     pm[brd==pc] =3 #setting current pc to 3
     ploc=np.where(brd==pc)#location of the piece
+    #if len(ploc)==0:
     x=ploc[0][0]
     y=ploc[1][0]  
     return x,y,pm,pc,brd,msk 
@@ -328,6 +335,140 @@ def getmsk(brd,msk,pm,bm,pc,plr):
     elif 'p' in pc[0]:
         brd,msk,pc,plr,pm,bm=pmask(brd,msk,pm,bm,pc,plr)
     return brd,msk,pc,plr,pm,bm
+
+def checkmate(brd,msk,pm,bm,pc,plr):
+    print("inside checkmate")
+    othplr = 2 if plr==1 else 1
+    #x,y,pm,pc,brd,msk = updatebrd(msk,brd,pc,pm)
+    othplpcs = brd[pm==othplr]
+    disp(brd,bm,pm,msk)
+    mskdict=dict()
+    pmdict =dict()
+    pcixy=np.where(brd==pc)
+    brd[pcixy]='000'
+    for pcoi in othplpcs:
+        msk[:,:]=0
+        pm[:,:]=0
+        brd,pm=plrmat(brd,pm)
+        tbrd,tmsk,tpc,tplr,tpm,bm=getmsk(brd,msk,pm,bm,pcoi,othplr)
+        disp(brd,bm,pm,msk)   
+        mskdict[pcoi]=tmsk.copy()
+        pmdict[pcoi]=pm.copy()
+        #print(mskdict['n22'][lo:hi,lo:hi].astype('int8'))
+        #print(brd[lo:hi,lo:hi])
+        #print(pmdict['n22'][lo:hi,lo:hi].astype('int8'))
+        #print(mskdict.keys())
+    otherplmsk=np.sum([x for x in mskdict.values()],axis=0).astype('bool') # combined mask of all othrplr pieces
+    #print(otherplmsk[lo:hi,lo:hi].astype('int8'))
+    msk[:,:]=0
+    pm[:,:]=0
+    #pdb.set_trace()
+    brd[pcixy]=pc
+    brd,pm=plrmat(brd,pm)
+    #pdb.set_trace()
+    brd,msk,pc,plr,pm,bm=kmask(brd,msk,pm,bm,pc,plr)
+    #pdb.set_trace()
+    print("\n\n")
+    print("\npm")
+    print(pm[lo:hi,lo:hi].astype('int8'))
+    print("\notherplmsk")
+    print(otherplmsk[lo:hi,lo:hi].astype('int8'))
+    print("\nmsk")
+    print(msk[lo:hi,lo:hi].astype('int8'))
+    print("\ncheckmate msk")
+    chmsk=~otherplmsk & msk
+    print(chmsk[lo:hi,lo:hi].astype('int8'))
+    print("\nbrd")
+    print(brd[lo:hi,lo:hi])
+    #pdb.set_trace()
+    return brd,msk,pc,plr,pm,bm,chmsk
+
+def checkmate2(brd,msk,pm,bm,pc,plr,chmsk):
+    chblist=list()
+    idx=0
+    if len(np.where(chmsk==True)[0]):
+        return False
+    for ir,ic in zip(np.where(chmsk==True)[0],np.where(chmsk==True)[1]):
+        tbrd=brd.copy();tmsk=msk.copy();tpm=pm.copy();tbm=bm.copy();tchmsk=chmsk.copy()
+        tpc=pc;tplr=plr
+        tmsk[:,:]=0
+        tpm[:,:]=0
+        tx,ty,tpm,tpc,tbrd,tmsk = updatebrd(tmsk,tbrd,tpc,tpm)
+        #pdb.set_trace()
+        if (tx==ir) and (ty==ic):
+            continue
+        tbrd[ir,ic]=tpc
+        tbrd[tx,ty]='000'
+        tbrd,tpm=plrmat(tbrd,tpm)
+        #pdb.set_trace()
+        tbrd,tmsk,tpc,tplr,tpm,tbm,tchmsk=checkmate(tbrd,tmsk,tpm,tbm,tpc,tplr)
+        chblist.append(tchmsk)
+    #pdb.set_trace()
+    if np.sum(chblist)>0:
+        return False
+    else:
+        return True
+
+
+def player(plr,msk,brd,pm,bm):
+    global force
+    brd,pm=plrmat(brd,pm)
+    #msk,brd,pm,bm=chessbrd()
+    pcloc=np.where(pm==plr)
+    if np.shape(pcloc)[1]>1:
+        for i in range(np.shape(pcloc)[1]):
+            randpc=int(np.random.random_sample()*np.shape(pcloc)[1])
+            force=True;print(randpc);force=False
+            #pdb.set_trace()
+            pc=np.random.choice(brd[pcloc])
+            #brd[pcloc[0][randpc], pcloc[0][randpc]]
+            #pdb.set_trace()
+            #force=True;print(brd[lo:hi,lo:hi]);force=False
+            #force=True;print(pc);force=False
+            #if pc=='p11':
+            #    pdb.set_trace()
+            msk[:,:]=0
+            x,y,pm,pc,brd,msk=updatebrd(msk,brd,pc,pm)
+            #brd,pm=plrmat(brd,pm)
+            brd,msk,pc,plr,pm,bm = getmsk(brd,msk,pm,bm,pc,plr)
+            #pdb.set_trace()
+            force=True;print(pc);force=False
+            if np.sum(msk) > 1:
+                #pdb.set_trace()
+                jj=np.where(msk==True)
+                oldloc=np.where(brd==pc)
+                kk=int(np.random.random_sample()*np.shape(jj)[1])
+                if (jj[0][kk]==oldloc[0][0]) and (jj[1][kk]==oldloc[1][0]):
+                    continue
+                #pdb.set_trace()
+                if plr == int(brd[ jj[0][kk], jj[1][kk] ][1]):
+                    continue
+                brd[ jj[0][kk], jj[1][kk] ] = pc
+                #pdb.set_trace()
+                brd[oldloc]='000'
+                #tbrd,tpm=plrmat(brd,pm)
+                #pdb.set_trace()
+                brd,pm=plrmat(brd,pm)
+                if 'k' not in pc:
+                    try:
+                        tpc=[ss for ss in brd[pm==plr] if 'k' in ss][0]
+                    except:
+                        pdb.set_trace()
+                else:
+                    tpc=pc
+                brd,msk,pc,plr,pm,bm,chmsk=checkmate(brd,msk,pm,bm,tpc,plr)
+                disp(brd,bm,pm,msk) 
+                #pdb.set_trace()
+                chkbool=checkmate2(brd,msk,pm,bm,tpc,plr,chmsk)
+                break
+                #pdb.set_trace()
+            else:
+                continue
+            #pdb.set_trace()
+            pm[:,:]=0
+            msk[:,:]=0
+    return brd,msk,pc,plr,pm,bm,chkbool
+
 
 
 def main():
