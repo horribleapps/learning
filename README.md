@@ -9,6 +9,7 @@ I initially did it using numpy and not using any classes.
 It quickly got very confusing and hard to take apart.
 Here is the link: 
 https://github.com/horribleapps/learning/tree/main/old_chess
+
 I created a pytest, but it quickly became too hard for me take apart.
 
 I decided to start using Object oriented program to see if that helps write better code.
