@@ -20,6 +20,7 @@ class Piece():
         self.uplim=7
         self.lolim=0
         self.locs=list()
+        self.moveNum=0
     def availableMoves(self):
         print("No movement for base class")
 
@@ -54,36 +55,39 @@ class Piece():
         return pcname
 
 class Pawn(Piece):
-    self.moveNum=1
     def availableMoves(self,board):
         locs=list()
         x=self.x
         y=self.y
         if self.player==1:
-            if x+1 <= hilim:
+            if x+1 <= self.uplim:
                 if (board[x+1][y] is None):
                     locs.append([x+1,y])
-                if y+1 <=hilim:
-                    if (board[x+1][y+1].player is not self.player):
-                        locs.append([x+1,y+1])
-                if y-1 >= lolim:
-                    if (board[x+1][y-1] is not self.player):
-                        locs.append([x+1,y+1])
-            if x+2 <= hilim:
-                if board[x+2][y] is None and self.moveNum==1:
+                if y+1 <=self.uplim:
+                    if board[x+1][y+1] is not None:
+                        if (board[x+1][y+1].player is not self.player):
+                            locs.append([x+1,y+1])
+                if y-1 >= self.lolim:
+                    if board[x+1][y-1] is not None:
+                        if (board[x+1][y-1] is not self.player):
+                            locs.append([x+1,y-1])
+            if x+2 <= self.uplim:
+                if board[x+2][y] is None and self.moveNum==0:
                     locs.append([x+2,y])
                     self.moveNum+=1
         elif self.player==2:
-            if x-1 >= lolim:
+            if x-1 >= self.lolim:
                 if (board[x-1][y] is None):
                     locs.append([x-1,y])
-                if y-1 >= lolim:
-                    if (board[x-1][y-1] is not self.player):
-                        locs.append([x-1,y-1])
-                if y+1 <= hilim:
-                    if (board[x-1][y+1] is not self.player):
-                        locs.append([x-1,y+1])
-            if x-2 <= lolim:
+                if y-1 >= self.lolim:
+                    if board[x-1][y-1] is not None:
+                        if (board[x-1][y-1] is not self.player):
+                            locs.append([x-1,y-1])
+                if y+1 <= self.uplim:
+                    if board[x-1][y+1] is not None:
+                        if (board[x-1][y+1] is not self.player):
+                            locs.append([x-1,y+1])
+            if x-2 <= self.lolim:
                 if board[x-2][y] is None and self.moveNum==1:
                     locs.append([x-2,y])
                     self.moveNum+=1
@@ -101,14 +105,14 @@ class Rook(Piece):
         #looking at values greater than x
         inBoundIntervals.append(self.checkBounds([[px,y] for px in range(x+1,self.uplim+1)]))
         inBoundIntervals.append(self.checkBounds([[x,py] for py in range(y+1,self.uplim+1) ]))
-        inBoundIntervals.append(self.checkBounds([[px,y] for py in reversed(range(self.lolim,x)) ]))
+        inBoundIntervals.append(self.checkBounds([[px,y] for px in reversed(range(self.lolim,x)) ]))
         inBoundIntervals.append(self.checkBounds([[x,py] for py in reversed(range(self.lolim,y)) ]))
         trimIntervals=self.checkpiece(board,inBoundIntervals)
         self.availableLocs=trimIntervals
         return trimIntervals
 
 class King(Piece):
-    def availableMoves(self):
+    def availableMoves(self,board):
         print("King")
         #print("rook")
         x=self.x
@@ -144,7 +148,7 @@ class Queen(Piece):
         #looking at values greater than x
         inBoundIntervals.append(self.checkBounds([[px,y] for px in range(x+1,self.uplim+1)]))
         inBoundIntervals.append(self.checkBounds([[x,py] for py in range(y+1,self.uplim+1) ]))
-        inBoundIntervals.append(self.checkBounds([[px,y] for py in reversed(range(self.lolim,x)) ]))
+        inBoundIntervals.append(self.checkBounds([[px,y] for px in reversed(range(self.lolim,x)) ]))
         inBoundIntervals.append(self.checkBounds([[x,py] for py in reversed(range(self.lolim,y)) ]))
         #x+px, x+py
         inBoundIntervals.append(\
@@ -177,7 +181,39 @@ class Queen(Piece):
         return trimIntervals
 
 class Knight(Piece):
-    def availableMoves(self):
+    def availableMoves(self,board):
+        #print("rook")
+        x=self.x
+        y=self.y
+        locs=list()
+        inBoundIntervals=list()
+        #x+2, x+py
+        inBoundIntervals.append(\
+                                self.checkBounds(\
+                                [ [x+2,y+py] for py in [-1,1] ]\
+                                ))
+        #x-2, x+py
+        inBoundIntervals.append(\
+                                self.checkBounds(\
+                                [ [x-2,y+py] for py in [-1,1]]\
+                                ))
+        #x-px, x+py
+        inBoundIntervals.append(\
+                                self.checkBounds(\
+                                [ [x+px,y+2] for px in [-1,1]]\
+                                ))
+        #x+px, x-py
+        inBoundIntervals.append(\
+                                self.checkBounds(\
+                                [ [x+px,y-2] for px in [-1,1] ]\
+                                ))
+        trimIntervals=self.checkpiece(board,inBoundIntervals)
+        self.availableLocs=trimIntervals
+        return trimIntervals
+
+
+class Bishop(Piece):
+    def availableMoves(self,board):
         #print("rook")
         x=self.x
         y=self.y
@@ -209,39 +245,6 @@ class Knight(Piece):
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
-        trimIntervals=self.checkpiece(board,inBoundIntervals)
-        self.availableLocs=trimIntervals
-        return trimIntervals
-
-
-class Bishop(Piece):
-    def availableMoves(self,board):
-        #print("rook")
-        x=self.x
-        y=self.y
-        locs=list()
-        inBoundIntervals=list()
-        #x+px, x+py
-        inBoundIntervals.append(\
-                                self.checkBounds( \
-                                [[x+2,py] for py in range(y-1,y+1)]\
-                                )\
-                                )
-        inBoundIntervals.append(\
-                                self.checkBounds( \
-                                [[x-2,py] for py in range(y-1,y+1)]\
-                                )\
-                                )
-        inBoundIntervals.append(\
-                                self.checkBounds( \
-                                [[px,y+2] for px in range(x-1,x+1)]\
-                                )\
-                                )
-        inBoundIntervals.append(\
-                                self.checkBounds( \
-                                [[px,y-2] for px in range(x-1,x+1)]\
-                                )\
-                                )       
         trimIntervals=self.checkpiece(board,inBoundIntervals)
         self.availableLocs=trimIntervals
         return trimIntervals
