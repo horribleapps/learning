@@ -2,123 +2,124 @@
 //code: https://codepen.io/viethoang012/pen/xRNgyM
 
 let plrOne = {
-                'r11':["♜",3],
-                'n11':["♞",5],
-                'b11':["♝",7],
-                'q11':["♛",9],
-                'k11':["♚",11],
-                'b12':["♝",13],
-                'n12':["♞",15],
-                'r12':["♜",17],
-                'p11':["♟",19],
-                'p12':["♟",21],
-                'p13':["♟",23],
-                'p14':["♟",25],
-                'p15':["♟",27],
-                'p16':["♟",29],
-                'p17':["♟",31],
-                'p18':["♟",33],
+                'r11':["♜",1],
+                'n11':["♞",2],
+                'b11':["♝",3],
+                'q11':["♛",4],
+                'k11':["♚",5],
+                'b12':["♝",6],
+                'n12':["♞",7],
+                'r12':["♜",8],
+                'p11':["♟",9],
+                'p12':["♟",10],
+                'p13':["♟",11],
+                'p14':["♟",12],
+                'p15':["♟",13],
+                'p16':["♟",14],
+                'p17':["♟",15],
+                'p18':["♟",16],
                 };
 
 let plrTwo = {
-                    'p21':["♙",99],
-                    'p22':["♙",101],
-                    'p23':["♙",103],
-                    'p24':["♙",105],
-                    'p25':["♙",107],
-                    'p26':["♙",109],
-                    'p27':["♙",111],
-                    'p28':["♙",113],
-                    'r21':["♖",115],
-                    'n21':["♘",117],
-                    'b21':["♗",119],
-                    'q21':["♕",121],
-                    'k21':["♔",123],
-                    'b22':["♗",125],
-                    'n22':["♘",127],
-                    'r22':["♖",99],
+                    'p21':["♙",49],
+                    'p22':["♙",50],
+                    'p23':["♙",51],
+                    'p24':["♙",52],
+                    'p25':["♙",53],
+                    'p26':["♙",54],
+                    'p27':["♙",55],
+                    'p28':["♙",56],
+                    'r21':["♖",57],
+                    'n21':["♘",58],
+                    'b21':["♗",59],
+                    'q21':["♕",60],
+                    'k21':["♔",61],
+                    'b22':["♗",62],
+                    'n22':["♘",63],
+                    'r22':["♖",64],
                     };
 
 let availMoves = [];
 
 let poi=0; //piece of interest index
 let moveList=[];
+player=1;
 
 function populateBoard() {
     let dv=document.getElementsByTagName('div');
-
+    refreshGrid();
     for (let i in plrOne) {
         dv[plrOne[i][1]].innerText=plrOne[i][0];
         //console.log(plrOne[i]);
     }
-    debugger;
+
     for (let j in plrTwo) {
         dv[plrTwo[j][1]].innerText=plrTwo[j][0];
-        //console.log(plrTwo[i]);
+        //console.log(plrTwo[j]);
     }
 }
 
 function refreshGrid() {
     let dv=document.getElementsByTagName('div');
-    for (let v=2;v<64+2;v++) {
+    for (let v=1;v<65;v++) {
         //debugger;
-        startclr = (parseInt( ((v-2)/8) % 2)==0 ) ? 'white':'gray';
-        endclr = (parseInt( ((v-2)/8) % 2)==0 ) ? 'gray':'white';
+        startclr = (parseInt( ((v-1)/8) % 2)==0 ) ? 'white':'gray';
+        endclr = (parseInt( ((v-1)/8) % 2)==0 ) ? 'gray':'white';
         dv[v].style.backgroundColor = (v%2==0 ) ? startclr:endclr;
-        dv[v].remove
+        dv[v].style.opacity=1;
     }
-    createButtons();
 }
 
-let availableMoves =  function(){
-    //console.log('Available Moves hello');
+function availableMoves(z,player){
+    //find all the available moves
     refreshGrid();
     let dv=document.getElementsByTagName('div');
-    for (var i = 0;i<dv.length; i++) {
-        if (window.getSelection().baseNode.parentNode == dv[i]) {
-            //debugger;
-            poi=i;
-            dv[i+8].style.backgroundColor='red';
-            dv[i+16].style.backgroundColor='red';
-            availMoves.push(i+8);
-            availMoves.push(i+16);
-            dv[i+8].addEventListener('click',movePiece,false);
-            dv[i+16].addEventListener('click',movePiece,false);
-        }
+    availMoves=[z+8,z+16];
+    for (let k=0;k<availMoves.length;k++) {
+      dv[availMoves[k]].style.backgroundColor='red';
+      dv[availMoves[k]].style.opacity=0.5;
     }
 }
 
-let movePiece = function() {
-    //console.log('Available Moves hello');
-    let dv=document.getElementsByTagName('div');
-    refreshGrid();
-    for (var i = 0;i<dv.length; i++) {
-        if (window.getSelection().baseNode.parentNode == dv[i]) {
-            //debugger;
-            dv[i].innerText = dv[poi].innerText;
-            //dv[poi].removeEventListener('click',availableMoves);//removing original piece
-            for (let k=0;k<availMoves.length;k++){
-                dv[availMoves[k]].removeEventListener('click',movePiece);
-            }
+function checkpc(tdv,idx,player) {
+  let dv=document.getElementsByTagName('div');
+  if(player==1){
+    for (let i in plrOne) {
+        if(dv[plrOne[i][1]].innerText==tdv.innerText){
+          availableMoves(idx,player);
         }
     }
+  }
+  if(player==2) {
+    for (let j in plrTwo) {
+      if(dv[plrOne[j][1]].innerText==tdv.innerText){
+        availableMoves(idx,player);
+        }
+    }
+  }
 }
 
-function createButtons(){
-    let dv=document.getElementsByTagName('div');
-    for (var i = 0;i<dv.length/2;i++) {
-        //debugger;
-        if (dv[i]){
-            if ((dv[i].innerText.length > 0) & (dv[i].innerText.length < 3)){
-                if (dv[i+8].innerText.length == 0){
-                    dv[i].addEventListener('click',availableMoves,false);
-                }
-            }
+function mouseclick(event) {
+  let dv=document.getElementsByTagName('div');
+  clickX=event.clientX;
+  clickY=event.clientY;
+  for (var i=1;i<dv.length;i++){
+    topoffset  = dv[i].offsetParent.offsetTop + dv[i].offsetParent.clientTop;
+    leftoffset = dv[i].offsetParent.offsetLeft + dv[i].offsetParent.clientLeft
+    divheight  = dv[i].offsetHeight;
+    divwidth    = dv[i].offsetWidth;
+    tdv=dv[i];
+    if ((clickX > tdv.offsetLeft+leftoffset) & (clickX < tdv.offsetLeft+leftoffset+divwidth) &
+        (clickY > tdv.offsetTop+topoffset) & (clickY < tdv.offsetTop+topoffset+divheight)) {
+          checkpc(tdv,i,player);
+          console.log("Div number: "+i);
         }
-    }
+  }
+
 }
 
 populateBoard();
+document.addEventListener("click",mouseclick);
 //createButtons();
 
 /*var dv = document.getElementsByTagName('div');

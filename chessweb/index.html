@@ -11,8 +11,7 @@
     width: 640px;
     height: 640px;
     margin: 20px;
-    border: 25px solid #333;
-    opacity: 0.2;
+    border: 25px solid rgb(0, 60, 255);
     position:absolute
     
 }
@@ -22,39 +21,37 @@
     height: 80px;
     background-color: #999;
     font-size:50px;
-    opacity:0.3;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
     position: relative;
-    z-index:1;
+    z-index:3;
 }
 #white {
     float: left;
     width: 80px;
     height: 80px;
     background-color: #fff;
-    opacity:0.3;
     font-size:50px;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
     position: relative;
-    z-index:1;
+    z-index:3;
 }
 
 #movdivs {
     float: left;
     width: 80px;
     height: 80px;
-    background-color: rgb(255, 0, 0);
+    background-color: red;
     font-size:50px;
-    opacity:0.3;
+    opacity:1;
     text-align:center;
     display: table-cell;
     vertical-align:middle;
     position: relative;
-    z-index:3;
+    z-index:1;
 }
 
 #moveboard{
@@ -75,80 +72,79 @@
 <body>
 
 
-    <div id="chessboard"></div>
-        <div id="moveboard">
+    <div id="chessboard">
             <!-- 1st -->
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
             <!-- 2nd -->
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
             <!-- 3th -->
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
             <!-- 4st -->
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
             <!-- 5th -->
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
             <!-- 6th -->
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
             <!-- 7th -->
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
             <!-- 8th -->
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
-            <div id="movdivs" ><div id="black"></div></div>
-            <div id="movdivs" ><div id="white"></div></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
+            <div id="black"></div>
+            <div id="white"></div>
         </div>
 
     <script src="js/chess.js" ></script>
