@@ -103,7 +103,7 @@ function availableMoves(z,poi){
     let dv=document.getElementsByTagName('div');
     key=getKey(z);
     //if (key==-1){console.log("No key found: "+key);}
-    tmp = (key==-1) ? null:pcdict[key[0]](key);
+    availMoves = (key==-1) ? null:pcdict[key[0]](key);
     if(dv[z].innerText != ''){
       for (let k=0;k<availMoves.length;k++) {
         dv[availMoves[k]].style.backgroundColor='red';
@@ -211,13 +211,13 @@ function removeBoundaries(loclist){
   return primedList;
 }
 
-function checkPieces(boundedList){
+function checkPiecesKnight(boundedList){
   keepOpponentList=[];
   let dv=document.getElementsByTagName('div');
   for(let l=0;l<boundedList.length;l++){
     r=boundedList[l][0];
     c=boundedList[l][1];
-    idx=8*parseInt(r)+c;
+    idx=8*parseInt(r)+c+1;
     key=getKey(idx);
     if(dv[idx].innerText!=''){
       if (playerpcs[key][2]!=player){
@@ -234,9 +234,9 @@ function checkPieces(boundedList){
 function convertToIdx(rcList){
   finalList=[];
   for(let l=0;l<rcList.length;l++){
-    r=boundedList[l][0];
-    c=boundedList[l][1];
-    idx=8*parseInt(r)+c;
+    r1=rcList[l][0];
+    c1=rcList[l][1];
+    idx=8*parseInt(r1)+c1+1;
     finalList.push(idx);
   }
   return finalList;
@@ -244,36 +244,98 @@ function convertToIdx(rcList){
 
 function knightMove(i){
   d=playerpcs[i];
-  loc=d[1];
-  r=parseInt(loc/8);
-  c=loc%8;
+  loc=d[1]-1;
+  row=Math.floor(loc/8);
+  col=(loc%8);
   loclist= [
-    [r+2,c+1],
-    [r+2,c-1],
-    [r-2,c+1],
-    [r-2,c-1],
-    [r-1,c+2],
-    [r-1,c-2],
-    [r+1,c+2],
-    [r+1,c-2],
+    [row+2,col+1],
+    [row+2,col-1],
+    [row-2,col+1],
+    [row-2,col-1],
+    [row-1,col+2],
+    [row-1,col-2],
+    [row+1,col+2],
+    [row+1,col-2],
     ]
   boundedList=removeBoundaries(loclist);
-  keepOpponentList=checkPieces(boundedList);
+  keepOpponentList=checkPiecesKnight(boundedList);
   finalList=convertToIdx(keepOpponentList);
-  availMoves=finalList;
+  return finalList;
+  //debugger;
 }
 
 function bishopMove(i){
   d=playerpcs[i];
   loc=d[1];
 }
+
 function pawnMove(i){
+  let dv=document.getElementsByTagName('div');
   d=playerpcs[i];
-  loc=d[1];
+  loc=d[1]-1;
+  row=Math.floor(loc/8);
+  col=(loc%8);
+  if (player==1){
+    loclist=[
+      [row+1,col],
+      [row+1,col-1],
+      [row+1,col+1],
+    ]
+  }
+  else if(player==2){
+    loclist=[
+      [row-1,col],
+      [row-1,col-1],
+      [row-1,col+1],
+    ]
+  }
+  boundedList=removeBoundaries(loclist);
+  //keepOpponentList=checkPiecesKnight(boundedList);
+  //debugger;
+  updatedList=[loclist[0]]
+  for(let x=0;x<boundedList.length;x++){
+    tr=boundedList[x][0];
+    tc=boundedList[x][1];
+    if((tc==col-1) | (tc==col+1)){
+      pidx=8*parseInt(tr)+tc+1;
+      //debugger;
+      if(dv[pidx].innerText!=''){
+        //debugger;
+        updatedList.push([tr,tc]);
+      }
+    }
+  }
+  keepOpponentList=checkPiecesKnight(updatedList);
+  finalList=convertToIdx(keepOpponentList);
+  return finalList;
 }
+
 function rookMove(i){
   d=playerpcs[i];
-  loc=d[1];
+  loc=d[1]-1;
+  row=Math.floor(loc/8);
+  col=(loc%8);
+  loclist=[];
+  //fixing x
+  //fixing x to end
+  for(let i=row;i<8;i++){
+    loclist.push([i,col]);
+  }
+  //fixing 0 to x
+  for(let i=0;i<row;i++){
+    loclist.push([i,col]);
+  }
+  //fixing y
+  //fixing y to end
+  for(let i=col;i<8;i++){
+    loclist.push([row,i]);
+  }
+  //fixing 0 to y
+  for(let i=0;i<col;i++){
+    loclist.push([row,i]);
+  }
+  boundedList=removeBoundaries(loclist);
+
 }
 function kingMove(i){
   d=playerpcs[i];
