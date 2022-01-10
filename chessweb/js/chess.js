@@ -104,6 +104,7 @@ function availableMoves(z,poi){
     key=getKey(z);
     //if (key==-1){console.log("No key found: "+key);}
     availMoves = (key==-1) ? null:pcdict[key[0]](key);
+    //availMoves = (typeof(availMoves[0])=="number") ? [availMoves]:availMoves;
     if(dv[z].innerText != ''){
       for (let k=0;k<availMoves.length;k++) {
         dv[availMoves[k]].style.backgroundColor='red';
@@ -265,8 +266,82 @@ function knightMove(i){
 }
 
 function bishopMove(i){
+  let dv=document.getElementsByTagName('div');
   d=playerpcs[i];
-  loc=d[1];
+  loc=d[1]-1;
+  row=Math.floor(loc/8);
+  col=(loc%8);
+  loclist=[];
+  //positive down diag
+  for(let j=1;j<8;j++){
+    tval=[row+j,col+j];
+    if((tval[0] >=8) | (tval[1] >=8)){break;}
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    }
+  }
+  //diagnal going up and left
+  for(let j=1;j<8;j++){
+    tval=[row-j,col-j];
+    if((tval[0] <0) | (tval[1] <0)){break;}
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    }
+  }
+  //diaganol going left and down
+  for(let j=1;j<8;j++){
+    tval=[row+j,col-j];
+    if((tval[0] >=8) | (tval[1] <0)){break;}
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    }
+  }
+  //diaganol going right and up
+  for(let j=1;j<8;j++){
+    tval=[row-j,col+j];
+    if((tval[0] <0) | (tval[1] >=8)){break;}
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    }
+  }
+  finalList=convertToIdx(loclist);
+  return finalList;
 }
 
 function pawnMove(i){
@@ -292,7 +367,7 @@ function pawnMove(i){
   boundedList=removeBoundaries(loclist);
   //keepOpponentList=checkPiecesKnight(boundedList);
   //debugger;
-  updatedList=[loclist[0]]
+  updatedList=(dv[convertToIdx([loclist[0]])].innerText=='') ? [loclist[0]]:[];
   for(let x=0;x<boundedList.length;x++){
     tr=boundedList[x][0];
     tc=boundedList[x][1];
@@ -311,6 +386,7 @@ function pawnMove(i){
 }
 
 function rookMove(i){
+  let dv=document.getElementsByTagName('div');
   d=playerpcs[i];
   loc=d[1]-1;
   row=Math.floor(loc/8);
@@ -318,30 +394,102 @@ function rookMove(i){
   loclist=[];
   //fixing x
   //fixing x to end
-  for(let i=row;i<8;i++){
-    loclist.push([i,col]);
+  for(let j=row+1;j<8;j++){
+    tval=[j,col];
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    }
   }
+  
   //fixing 0 to x
-  for(let i=0;i<row;i++){
-    loclist.push([i,col]);
+  for(let j=row-1;j>=0;j--){
+    tval=[j,col];
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    } 
   }
+
   //fixing y
   //fixing y to end
-  for(let i=col;i<8;i++){
-    loclist.push([row,i]);
+  for(let j=col+1;j<8;j++){
+    tval=[row,j];
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    } 
   }
   //fixing 0 to y
-  for(let i=0;i<col;i++){
-    loclist.push([row,i]);
+  for(let j=col-1;j>=0;j--){
+    tval=[row,j];
+    temp=convertToIdx([tval]);
+    keyoi=getKey(temp);
+    if(dv[temp].innerText==''){
+      loclist.push(tval);
+    }
+    else if(playerpcs[keyoi][2]!=player){
+      loclist.push(tval);
+      break;
+    }
+    else if(playerpcs[keyoi][2]==player){
+      break;
+    } 
+  
   }
-  boundedList=removeBoundaries(loclist);
+  //debugger;
+  finalList=convertToIdx(loclist);
+  return finalList;
 
 }
 function kingMove(i){
+  let dv=document.getElementsByTagName('div');
   d=playerpcs[i];
-  loc=d[1];
+  loc=d[1]-1;
+  row=Math.floor(loc/8);
+  col=(loc%8);
+  loclist=[
+    [row+1,col],
+    [row-1,col],
+    [row+1,col+1],
+    [row+1,col-1],
+    [row-1,col+1],
+    [row-1,col-1],
+    [row,col+1],
+    [row,col-1],
+  ];
+  boundedList=removeBoundaries(loclist);
+  keepOpponentList=checkPiecesKnight(boundedList);
+  finalList=convertToIdx(keepOpponentList);
+  return finalList;
 }
 function queenMove(i){
-  d=playerpcs[i];
-  loc=d[1];
+  bMoves=bishopMove(i);
+  rMoves=rookMove(i);
+  finalList=bMoves.concat(rMoves);
+  return finalList;
 }
