@@ -52,6 +52,8 @@ let moveList=[];
 let player=1;
 let movebool=false;
 let keyoi='';
+let availKingList=[];
+let checkbool=false;
 
 function populateBoard() {
     let dv=document.getElementsByTagName('div');
@@ -96,7 +98,7 @@ function updateBoard() {
   }
 }
 
-function availableMoves(z,poi){
+function availableMoves(z){
     //find all the available moves
     refreshGrid();
     pcidx=z;
@@ -111,6 +113,16 @@ function availableMoves(z,poi){
         dv[availMoves[k]].style.opacity=0.5;
       }
     }
+}
+
+function availableMoves2(z){
+  //find all the available moves
+  refreshGrid();
+  pcidx=z;
+  let dv=document.getElementsByTagName('div');
+  key=getKey(z);
+  //if (key==-1){console.log("No key found: "+key);}
+  availMoves = (key==-1) ? null:pcdict[key[0]](key);
 }
 
 function killpc(idx) {
@@ -150,26 +162,95 @@ function checkplayerpc(idx){
   return false;
 }
 
+function checkKing(){
+  let dv=document.getElementsByTagName('div');
+  let kidx=0;
+  let klist=[];
+  for (let idx in playerpcs) {
+    if(playerpcs[idx][2] == player){
+      availableMoves2(playerpcs[idx][1]);
+      for(idx2=0;idx2<availMoves.length;idx2++){
+        koi = getKey(availMoves[idx2]);
+        if(koi==-1) {
+          continue;
+        }
+        else if(koi.includes('k')){
+          if(playerpcs[koi][2]!=player){
+            availKingList=availKingList.concat(availMoves);
+            //break;
+          }
+        }
+      }
+    }
+  }
+}
+
+function checkintersection(kingavailmoves){
+  remainingKingMoves=[];
+  kingbool=false;
+  for(let kidx=0;kidx<kingavailmoves.length;kidx++){
+    kingbool=false;
+    for(let kidx2=0;kidx2<availKingList.length;kidx2++){
+      if(availKingList[kidx2]==kingavailmoves[kidx]){
+        kingbool=true;
+      }
+    }
+    if(kingbool==false){
+      remainingKingMoves.push(kingavailmoves[kidx])
+    }
+  }
+  return remainingKingMoves;
+}
+
+function checkKingBool(){
+  checkKing()
+  checkbool=false;
+  if (availKingList.length > 0){
+    player = (player==1) ? 2:1;
+    //debugger;
+    kingstr = 'k'+String(player)+'1';
+    kingavailmoves = kingMove(kingstr);
+    remainingKingMoves = checkintersection(kingavailmoves);
+    if(remainingKingMoves.length==0){
+      console.log("GAME OVER!!");
+    }
+    else{
+      availableMoves(playerpcs[kingstr][1]);
+      checkbool=true;
+    }
+    player = (player==2) ? 1:2;
+    //debugger;
+  }
+  //tempplayer = (player==1) ? 2:1;
+  //console.log("Check for player "+String(tempplayer));
+}
+
 function checkpc(tdv,idx) {
   let dv=document.getElementsByTagName('div');
   if(player==1){
     if(dv[idx].style.backgroundColor=='red'){
       updatedict(idx);
       updateBoard();
+      checkKingBool();
       player=2;
     }
-    else if ((dv[idx].innerText==tdv.innerText) & (checkplayerpc(idx)==true)){
-      availableMoves(idx);
+    else if ((dv[idx].innerText==tdv.innerText) & (checkplayerpc(idx)==true) & 
+            (checkbool==false)){
+              availKingList=[];
+              availableMoves(idx);
     }
   }
   else if(player==2){
     if(dv[idx].style.backgroundColor=='red'){
       updatedict(idx);
       updateBoard();
+      checkKingBool();
       player=1;
     }
-    else if((dv[idx].innerText==tdv.innerText) & (checkplayerpc(idx)==true)){
-      availableMoves(idx);
+    else if((dv[idx].innerText==tdv.innerText) & (checkplayerpc(idx)==true) & 
+           (checkbool==false)){
+            availKingList=[];
+            availableMoves(idx);
     }
   }
   console.log(pcidx)
@@ -466,6 +547,7 @@ function rookMove(i){
   return finalList;
 
 }
+
 function kingMove(i){
   let dv=document.getElementsByTagName('div');
   d=playerpcs[i];
@@ -487,6 +569,7 @@ function kingMove(i){
   finalList=convertToIdx(keepOpponentList);
   return finalList;
 }
+
 function queenMove(i){
   bMoves=bishopMove(i);
   rMoves=rookMove(i);
