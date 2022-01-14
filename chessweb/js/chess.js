@@ -109,7 +109,7 @@ function availableMoves(z){
     //availMoves = (typeof(availMoves[0])=="number") ? [availMoves]:availMoves;
     if(dv[z].innerText != ''){
       for (let k=0;k<availMoves.length;k++) {
-        dv[availMoves[k]].style.backgroundColor='red';
+        dv[availMoves[k]].style.backgroundColor='blue';
         dv[availMoves[k]].style.opacity=0.5;
       }
     }
@@ -166,6 +166,8 @@ function checkKing(){
   let dv=document.getElementsByTagName('div');
   let kidx=0;
   let klist=[];
+  let counter=0;
+  availKingList=[];
   for (let idx in playerpcs) {
     if(playerpcs[idx][2] == player){
       availableMoves2(playerpcs[idx][1]);
@@ -183,6 +185,7 @@ function checkKing(){
       }
     }
   }
+  //debugger;
 }
 
 function checkintersection(kingavailmoves){
@@ -213,8 +216,17 @@ function checkKingBool(){
     remainingKingMoves = checkintersection(kingavailmoves);
     if(remainingKingMoves.length==0){
       console.log("GAME OVER!!");
+      let md=document.getElementsByTagName('div')[0];
+      md.style.fontSize='400%';
+      md.style.color='red';
+      //md.='blue';
+      md.innerText="GAME OVER!";
+    }
+    else if(availKingList.length==0){
+      checkbool=false;
     }
     else{
+      //debugger;
       availableMoves(playerpcs[kingstr][1]);
       checkbool=true;
     }
@@ -228,7 +240,7 @@ function checkKingBool(){
 function checkpc(tdv,idx) {
   let dv=document.getElementsByTagName('div');
   if(player==1){
-    if(dv[idx].style.backgroundColor=='red'){
+    if(dv[idx].style.backgroundColor=='blue'){
       updatedict(idx);
       updateBoard();
       checkKingBool();
@@ -241,7 +253,7 @@ function checkpc(tdv,idx) {
     }
   }
   else if(player==2){
-    if(dv[idx].style.backgroundColor=='red'){
+    if(dv[idx].style.backgroundColor=='blue'){
       updatedict(idx);
       updateBoard();
       checkKingBool();
