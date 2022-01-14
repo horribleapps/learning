@@ -265,9 +265,12 @@ function checkpc(tdv,idx) {
             availableMoves(idx);
     }
   }
-  /*let sp=document.getElementsByTagName('span');
+  //let dv=document.getElementsByTagName('div');
   //debugger;
-  sp.innerHTML="Player "+String(player);*/
+  dv[dv.length-1].style.color='black';
+  dv[dv.length-1].style.fontSize='large';
+  dv[dv.length-1].innerHTML="Player "+String(player);
+  dv[dv.length-1].innerText="Player "+String(player);
   console.log(pcidx)
 }
 
