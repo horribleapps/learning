@@ -265,6 +265,9 @@ function checkpc(tdv,idx) {
             availableMoves(idx);
     }
   }
+  /*let sp=document.getElementsByTagName('span');
+  //debugger;
+  sp.innerHTML="Player "+String(player);*/
   console.log(pcidx)
 }
 
@@ -289,7 +292,6 @@ function mouseclick(event) {
 
 populateBoard();
 document.addEventListener("click",mouseclick);
-
 
 /* BELOW HERE ARE FIGURING ARE THE AVAILABLE OPTIONS FOR A CERTAIN PIECE*/
 
