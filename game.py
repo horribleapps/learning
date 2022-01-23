@@ -27,6 +27,12 @@ def pickMove(plr,gm):
         print()
         #pdb.set_trace()
         moves=poi.availableMoves(gm.board)
+        if poi.seeKing == True:
+            pdb.set_trace()
+            moveDone=True
+            gm.kingInCheck(poi,gm.board)
+            pdb.set_trace()
+            break
         #pdb.set_trace()
         if len(moves) > 0:
             pcloc=random.choice(moves)
