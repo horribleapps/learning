@@ -33,7 +33,6 @@ class Piece():
         return inBoundIntervals
 
     def checkpiece(self,board,intervals):
-        #print(str(px)+' '+str(py))
         trimIntervals=list()
         for i in intervals:
             if len(i)>0:
@@ -43,6 +42,7 @@ class Piece():
                         trimIntervals.append([jx,jy])
                     elif board[jx][jy].player!=self.player and not breakbool:
                         trimIntervals.append([jx,jy])
+                        return trimIntervals
                     else:
                         breakbool=True
                         break
@@ -69,6 +69,23 @@ class Piece():
         return pcname
 
 class Pawn(Piece):
+
+    def checkpiece(self,board,intervals):
+        #print(str(px)+' '+str(py))
+        trimIntervals=list()
+        for i in intervals:
+            if len(i)>0:
+                breakbool=False
+                for jx,jy in i:  
+                    if board[jx][jy] is None and not breakbool:
+                        trimIntervals.append([jx,jy])
+                    elif board[jx][jy].player!=self.player and not breakbool:
+                        trimIntervals.append([jx,jy])
+                    else:
+                        breakbool=True
+                        break
+        return trimIntervals
+
     def availableMoves(self,board):
         locs=list()
         x=self.x
@@ -111,21 +128,6 @@ class Pawn(Piece):
 
 class Rook(Piece):
     
-    def checkpiece(self,board,intervals):
-        trimIntervals=list()
-        for i in intervals:
-            if len(i)>0:
-                breakbool=False
-                for jx,jy in i:  
-                    if board[jx][jy] is None and not breakbool:
-                        trimIntervals.append([jx,jy])
-                    elif board[jx][jy].player!=self.player and not breakbool:
-                        trimIntervals.append([jx,jy])
-                        return trimIntervals
-                    else:
-                        breakbool=True
-                        break
-        return trimIntervals
 
     def availableMoves(self,board):
         #print("rook")
@@ -186,44 +188,79 @@ class Queen(Piece):
         x=self.x
         y=self.y
         locs=list()
-        inBoundIntervals=list()
+        inBoundIntervals1=list()
+        inBoundIntervals2=list()
+        inBoundIntervals3=list()
+        inBoundIntervals4=list()
+        inBoundIntervals5=list()
+        inBoundIntervals6=list()
+        inBoundIntervals7=list()
+        inBoundIntervals8=list()
         #looking at values greater than x
-        inBoundIntervals.append(self.checkBounds([[px,y] for px in range(x+1,self.uplim+1)]))
-        inBoundIntervals.append(self.checkBounds([[x,py] for py in range(y+1,self.uplim+1) ]))
-        inBoundIntervals.append(self.checkBounds([[px,y] for px in reversed(range(self.lolim,x)) ]))
-        inBoundIntervals.append(self.checkBounds([[x,py] for py in reversed(range(self.lolim,y)) ]))
+        inBoundIntervals1.append(self.checkBounds([[px,y] for px in range(x+1,self.uplim+1)]))
+        trimIntervals1 = self.checkpiece(board,inBoundIntervals1)
+        inBoundIntervals2.append(self.checkBounds([[x,py] for py in range(y+1,self.uplim+1) ]))
+        trimIntervals2 = self.checkpiece(board,inBoundIntervals2)
+        inBoundIntervals3.append(self.checkBounds([[px,y] for px in reversed(range(self.lolim,x)) ]))
+        trimIntervals3 = self.checkpiece(board,inBoundIntervals3)
+        inBoundIntervals4.append(self.checkBounds([[x,py] for py in reversed(range(self.lolim,y)) ]))
+        trimIntervals4 = self.checkpiece(board,inBoundIntervals4)
         #x+px, x+py
-        inBoundIntervals.append(\
+        inBoundIntervals5.append(\
                                 self.checkBounds(\
                                 [ [x+px,y+py] for px,py in zip(range(1,8),range(1,8)) ]\
                                 ))
+        trimIntervals5 = self.checkpiece(board,inBoundIntervals5)
         #x-px, x-py
-        inBoundIntervals.append(\
+        inBoundIntervals6.append(\
                                 self.checkBounds(\
                                 [ [x-px,y-py] for px,py in zip(\
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
+        trimIntervals6 = self.checkpiece(board,inBoundIntervals6)
         #x-px, x+py
-        inBoundIntervals.append(\
+        inBoundIntervals7.append(\
                                 self.checkBounds(\
                                 [ [x-px,y+py] for px,py in zip(\
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
+        trimIntervals7 = self.checkpiece(board,inBoundIntervals7)
         #x+px, x-py
-        inBoundIntervals.append(\
+        inBoundIntervals8.append(\
                                 self.checkBounds(\
                                 [ [x+px,y-py] for px,py in zip(\
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
-        trimIntervals=self.checkpiece(board,inBoundIntervals)
+        trimIntervals8 = self.checkpiece(board,inBoundIntervals8)
+        trimIntervals=trimIntervals1+trimIntervals2+trimIntervals3+\
+                        trimIntervals4+trimIntervals5+trimIntervals6+\
+                        trimIntervals7+trimIntervals8
+        #trimIntervals=self.checkpiece(board,inBoundIntervals)
         self.availableLocs=trimIntervals
         self.checkKing(board)
         return trimIntervals
 
 class Knight(Piece):
+
+    def checkpiece(self,board,intervals):
+        #print(str(px)+' '+str(py))
+        trimIntervals=list()
+        for i in intervals:
+            if len(i)>0:
+                breakbool=False
+                for jx,jy in i:  
+                    if board[jx][jy] is None and not breakbool:
+                        trimIntervals.append([jx,jy])
+                    elif board[jx][jy].player!=self.player and not breakbool:
+                        trimIntervals.append([jx,jy])
+                    else:
+                        breakbool=True
+                        break
+        return trimIntervals
+
     def availableMoves(self,board):
         #print("rook")
         x=self.x
@@ -256,39 +293,48 @@ class Knight(Piece):
         return trimIntervals
 
 class Bishop(Piece):
+
     def availableMoves(self,board):
         #print("rook")
         x=self.x
         y=self.y
         locs=list()
-        inBoundIntervals=list()
+        inBoundIntervals1=list()
+        inBoundIntervals2=list()
+        inBoundIntervals3=list()
+        inBoundIntervals4=list()
         #x+px, x+py
-        inBoundIntervals.append(\
+        inBoundIntervals1.append(\
                                 self.checkBounds(\
                                 [ [x+px,y+py] for px,py in zip(range(1,8),range(1,8)) ]\
                                 ))
+        trimIntervals1 = self.checkpiece(board,inBoundIntervals1)
         #x-px, x-py
-        inBoundIntervals.append(\
+        inBoundIntervals2.append(\
                                 self.checkBounds(\
                                 [ [x-px,y-py] for px,py in zip(\
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
+        trimIntervals2 = self.checkpiece(board,inBoundIntervals2)
         #x-px, x+py
-        inBoundIntervals.append(\
+        inBoundIntervals3.append(\
                                 self.checkBounds(\
                                 [ [x-px,y+py] for px,py in zip(\
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
+        trimIntervals3 = self.checkpiece(board,inBoundIntervals3)
         #x+px, x-py
-        inBoundIntervals.append(\
+        inBoundIntervals4.append(\
                                 self.checkBounds(\
                                 [ [x+px,y-py] for px,py in zip(\
                                 range(1,8),range(1,8) \
                                 ) ]\
                                 ))
-        trimIntervals=self.checkpiece(board,inBoundIntervals)
+        trimIntervals4 = self.checkpiece(board,inBoundIntervals4)
+        trimIntervals=trimIntervals1+trimIntervals2+trimIntervals3+trimIntervals4
+        #trimIntervals=self.checkpiece(board,inBoundIntervals)
         self.availableLocs=trimIntervals
         self.checkKing(board)
         return trimIntervals

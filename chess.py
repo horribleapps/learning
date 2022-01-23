@@ -153,11 +153,10 @@ class Game():
         if len(intervals)>0:
             for kx,ky in intervals:
                 if board[kx][ky] is not None:
-                    continue
                     if (\
                     ('King' in str(board[kx][ky])) \
                     and \
-                    (board[kx][ky].player != self.player)\
+                    (board[kx][ky].player != pc.player)\
                     ):
                         pck=board[kx][ky]
                         kam=pck.availableMoves(board)
