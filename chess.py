@@ -26,7 +26,11 @@ class Game():
         self.uplim=7
         self.lolim=0
         self.cmate=False
+        self.stalemate=False
         self.check=False
+        self.userPiece=None
+        self.userx=0
+        self.usery=0
         self.placePieces()
         self.printBoard()
   
@@ -101,45 +105,12 @@ class Game():
         f.write("==============================\n")
         f.close()
 
-    def verifyCheck(self,newloc,pc):
-        x=newloc[0]
-        y=newloc[1]
-        
-        for i in range(0,8):
-            for j in range(0,8):
-                tmp=self.board[i][j]
-                if tmp is not None:
-                    xyvals=tmp.availableMoves(self.board)
-                else:
-                    continue
-                for kx,ky in xyvals:
-                    if ('King' in str(self.board[kx][ky])):
-                        pdb.set_trace()
-                    if  (\
-                        ('King' in str(self.board[kx][ky])) \
-                        and \
-                        (self.board[kx][ky].player != pc.player) \
-                        ):
-                        
-                        kingtmp=self.board[kx][ky]
-                        kingAvailableMoves=kingtmp.availableMoves(self.board)
-                        pdb.set_trace()
-                        if len(kingAvailableMoves)==0:
-                            self.cmate=True
-                            return True
-                        newKingMove=random.choice(kingAvailableMoves)
-                        self.moveKing(newKingMove,kingtmp)
-                        self.check=True
-                        return True
-                    else:
-                        self.check=False
-                        return False
-
     def updateMove(self,newloc,pc):
+        #if len(newloc)==1:
+            #pdb.set_trace()
         if len(newloc)>0:
             x=newloc[0]
             y=newloc[1]
-            #cbool=self.verifyCheck(newloc,pc)
             cbool=False
             if not cbool:
                 self.board[pc.x][pc.y]=None
@@ -147,7 +118,8 @@ class Game():
                 pc.x=x;pc.y=y
         self.printBoard()
 
-    def kingInCheck(self,pc,board):
+
+    '''def kingInCheck(self,pc,board):
         intervals = pc.availableLocs
         cntr=0
         if len(intervals)>0:
@@ -160,26 +132,27 @@ class Game():
                     ):
                         pck=board[kx][ky]
                         kam=pck.availableMoves(board)
-                        pdb.set_trace()
+                        #pdb.set_trace()
                         if len(kam) == 0:
                             self.cmate=True
+                            pdb.set_trace()
                             break
                         elif len(kam) ==1:
-                            updateMove(kam,pck)
+                            #pdb.set_trace()
+                            tempx=kam[0][0]
+                            tempy=kam[0][1]
+                            pcloc=kam[0]
+                            if ((board[tempx][tempy].player!=pck.player)\
+                            and\
+                            ('King' in str(board[tempx][tempy]))\
+                            ):
+                                self.stalemate=True
+                                break
+                            self.updateMove(pcloc,pck)
                             break
                         elif len(kam) > 0:
                             pcloc=random.choice(kam)
-                            updateMove(kam,pck)
+                            self.updateMove(pcloc,pck)
                             break
-        '''
-        x=newloc[0]
-        y=newloc[1]
-        self.board[pc.x][pc.y]=None
-        self.board[x][y]=pc
-        pc.x=x;pc.y=y
-        '''
-
-#gm=Game()
-#rk=gm.board[0][7]
-#print(rk.availableMoves(gm.board))
+    '''
 
