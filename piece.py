@@ -155,6 +155,20 @@ class Rook(Piece):
 
 
 class King(Piece):
+
+    def checkpiece(self,board,intervals):
+        #print(str(px)+' '+str(py))
+        trimIntervals=list()
+        for i in intervals:
+            if len(i)>0:
+                breakbool=False
+                for jx,jy in i:  
+                    if board[jx][jy] is None and not breakbool:
+                        trimIntervals.append([jx,jy])
+                    elif board[jx][jy].player!=self.player and not breakbool:
+                        trimIntervals.append([jx,jy])
+        return trimIntervals
+
     def availableMoves(self,board):
         print("King")
         #print("rook")
@@ -164,17 +178,17 @@ class King(Piece):
         inBoundIntervals=list()
         inBoundIntervals.append(\
                                 self.checkBounds( \
-                                [[x+1,py] for py in range(y-1,y+1)]\
+                                [[x+1,py] for py in range(y-1,y+2)]\
                                 )\
                                 )
         inBoundIntervals.append(\
                                 self.checkBounds( \
-                                [[x-1,py] for py in range(y-1,y+1)]\
+                                [[x-1,py] for py in range(y-1,y+2)]\
                                 )\
                                 )
         inBoundIntervals.append(\
                                 self.checkBounds( \
-                                [[x,py] for py in [y-1,y+1] ]\
+                                [[x,py] for py in range(y-1,y+2) ]\
                                 )\
                                 )
         trimIntervals=self.checkpiece(board,inBoundIntervals)

@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import sys
 import pdb
 import random
+import sys
 from chess import Game
 from piece import *
 
@@ -61,13 +62,16 @@ def getPiece(plr,gm):
                     gm.userPiece=gm.board[i][j]
                     gm.userx=i;gm.usery=j
                     breakInput=True
-        except:
+        except KeyboardInterrupt:
+            sys.exit()
+            continue 
+        finally:
             print("This is not a valid piece")
             continue
     print("You have chosen: ")
     print(gm.userPiece)
 
-def getUserxy(plr,gm,endTurn,moves):
+def getUserxy(plr,gm,endTurn,moves,kingpc=None):
     breakInput=False
     print("Available moves:")
     print(moves)
@@ -85,8 +89,12 @@ def getUserxy(plr,gm,endTurn,moves):
         if sum(boolList)==0:
             print("That move is not available!\n")
         else:
-            gm.updateMove(tmplist,gm.userPiece)
-            endTurn=True
+            if kingpc is None:
+                gm.updateMove(tmplist,gm.userPiece)
+                endTurn=True
+            else:
+                gm.updateMove(tmplist,kingpc)
+                endTurn=True
             break
     return endTurn
 
@@ -97,7 +105,7 @@ def userMove(plr,gm):
     gm.userx=-1
     gm.usery=-1
     endTurn=False
-    while(not endTurn):
+    while((not endTurn)):
         getPiece(plr,gm)
         moves=gm.userPiece.availableMoves(gm.board)
         if len(moves)==0:
@@ -107,13 +115,23 @@ def userMove(plr,gm):
         print("Available moves:")
         print(moves)
         endTurn=getUserxy(plr,gm,endTurn,moves)
+        moves=gm.userPiece.availableMoves(gm.board)
+        gm.checkKing(plr,moves)
+        if gm.cmate:
+            break
+        if gm.check:
+            resultingKingMoves,kingpc=gm.moveKing(plr)
+            if len(resultingKingMoves)!=0:
+                endTurn=getUserxy(plr,gm,endTurn,resultingKingMoves,kingpc=kingpc)
+            else:
+                break
 
 
 def main():
     gm=Game()
     cm=False
     idx=0
-    while((~gm.cmate) and (~gm.stalemate)):
+    while((not gm.cmate) and (not gm.stalemate)):
         if idx%2==0:
             f=open('moves.txt','a')
             f.write('1\n')
