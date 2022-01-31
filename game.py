@@ -98,7 +98,6 @@ def getUserxy(plr,gm,endTurn,moves,kingpc=None):
             break
     return endTurn
 
-
 def userMove(plr,gm):
     gm.printBoard()
     gm.userPiece=None
@@ -131,7 +130,8 @@ def main():
     gm=Game()
     cm=False
     idx=0
-    while((not gm.cmate) and (not gm.stalemate)):
+    gm.printBoard()
+    while((not gm.cmate)):
         if idx%2==0:
             f=open('moves.txt','a')
             f.write('1\n')
@@ -147,20 +147,23 @@ def main():
         idx+=1
     if gm.cmate:
         print("Game over!")
+    '''while((not gm.cmate) and (not gm.stalemate)):
+        if idx%2==0:
+            f=open('moves.txt','a')
+            f.write('1\n')
+            f.close()
+            userMove(1,gm)
+            #pickMove(1,gm)
+        else:
+            f=open('moves.txt','a')
+            f.write('2\n')
+            f.close()
+            userMove(2,gm)
+            #pickMove(2,gm)
+        idx+=1
+    if gm.cmate:
+        print("Game over!")'''
 
 
 if __name__=="__main__":
     main()
-
-'''
-rk=gm.board[0][7]
-hh=rk.availableMoves(gm.board)
-print(len(hh))
-bh = gm.board[0][2]
-bb=bh.availableMoves(gm.board)
-print(len(bb))
-gm.updateMove([4,4],bh)
-qu = gm.board[0][3]
-qq=qu.availableMoves(gm.board)
-pdb.set_trace()
-'''
