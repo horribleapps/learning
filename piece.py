@@ -259,6 +259,11 @@ class Queen(Piece):
 
 class Knight(Piece):
 
+    def __init__(self,player,name,position):
+        super().__init__(player,name,position)
+        self.check=False
+        self.cmate=False
+    
     def checkpiece(self,board,intervals):
         #print(str(px)+' '+str(py))
         trimIntervals=list()
@@ -305,6 +310,34 @@ class Knight(Piece):
         self.availableLocs=trimIntervals
         self.checkKing(board)
         return trimIntervals
+
+    def isCheck(self,board):
+        #moveList=self.findKing(moves,plr)
+        tmplist=list()
+        for i in range(8):
+            for j in range(8):
+                pc=board[i][j]
+                if (pc.player!=player):
+                    tmplist.append(pc.availableMoves(board))
+        
+        '''tmplist=list()
+        for k in otherPlayer.pieces:
+            tmplist.extend(otherplayer.pieces[k].availableMoves(board))
+        kingmoves=self.pieces['k1'+str(self.playerNumber)]\
+                            .availableMoves(board)
+        if len(kingmoves)==0:
+            self.cmate=True
+        resultingMoves=list()
+        boolList=list()
+        for km in kingmoves:
+            for m in tmplist:
+                boolList.append(m==km)
+            if sum(boolList)!=0:
+                resultingMoves.extend(km)
+        if len(resultingMoves)==0:
+            self.cmate=True
+        else:
+            self.check=True'''
 
 class Bishop(Piece):
 

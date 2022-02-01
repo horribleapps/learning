@@ -54,23 +54,3 @@ class Player():
     def removePiece(self,key):
         del self.pieces[key]
 
-    def isCheck(self,otherPlayer,board):
-        #moveList=self.findKing(moves,plr)
-        tmplist=list()
-        for k in otherPlayer.pieces:
-            tmplist.extend(otherplayer.pieces[k].availableMoves(board))
-        kingmoves=self.pieces['k1'+str(self.playerNumber)]\
-                            .availableMoves(board)
-        if len(kingmoves)==0:
-            self.cmate=True
-        resultingMoves=list()
-        boolList=list()
-        for km in kingmoves:
-            for m in tmplist:
-                boolList.append(m==km)
-            if sum(boolList)!=0:
-                resultingMoves.extend(km)
-        if len(resultingMoves)==0:
-            self.cmate=True
-        else:
-            self.check=True

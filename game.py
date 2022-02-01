@@ -147,23 +147,6 @@ def main():
         idx+=1
     if gm.cmate:
         print("Game over!")
-    '''while((not gm.cmate) and (not gm.stalemate)):
-        if idx%2==0:
-            f=open('moves.txt','a')
-            f.write('1\n')
-            f.close()
-            userMove(1,gm)
-            #pickMove(1,gm)
-        else:
-            f=open('moves.txt','a')
-            f.write('2\n')
-            f.close()
-            userMove(2,gm)
-            #pickMove(2,gm)
-        idx+=1
-    if gm.cmate:
-        print("Game over!")'''
-
 
 if __name__=="__main__":
     main()
