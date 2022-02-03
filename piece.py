@@ -53,7 +53,8 @@ class Piece():
         cntr=0
         if len(intervals)>0:
             for kx,ky in intervals:
-                if (('King' in str(board[kx][ky])) and (board[kx][ky].player != self.player)):
+                if (('King' in str(board[kx][ky])) and \
+                    (board[kx][ky].player != self.player)):
                     self.seeKing=True
                     #pdb.set_trace()
                     break
@@ -319,6 +320,7 @@ class Knight(Piece):
                 pc=board[i][j]
                 if (pc.player!=player):
                     tmplist.append(pc.availableMoves(board))
+        
         
         '''tmplist=list()
         for k in otherPlayer.pieces:
