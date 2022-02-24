@@ -104,7 +104,7 @@ def userMove(plr,gm):
     gm.userx=-1
     gm.usery=-1
     endTurn=False
-    while((not endTurn)):
+    while(not endTurn):
         getPiece(plr,gm)
         moves=gm.userPiece.availableMoves(gm.board)
         if len(moves)==0:
@@ -115,15 +115,14 @@ def userMove(plr,gm):
         print(moves)
         endTurn=getUserxy(plr,gm,endTurn,moves)
         moves=gm.userPiece.availableMoves(gm.board)
-        gm.checkKing(plr,moves)
-        if gm.cmate:
+        '''if gm.cmate:
             break
         if gm.check:
             resultingKingMoves,kingpc=gm.moveKing(plr)
             if len(resultingKingMoves)!=0:
                 endTurn=getUserxy(plr,gm,endTurn,resultingKingMoves,kingpc=kingpc)
             else:
-                break
+                break'''
 
 
 def main():
@@ -132,18 +131,19 @@ def main():
     idx=0
     gm.printBoard()
     while((not gm.cmate)):
-        if idx%2==0:
+        if ((idx%2==0) and gm.player1.check):
             f=open('moves.txt','a')
             f.write('1\n')
             f.close()
             userMove(1,gm)
             #pickMove(1,gm)
-        else:
+        elif ((idx%2!=0) and gm.player2.check):
             f=open('moves.txt','a')
             f.write('2\n')
             f.close()
             userMove(2,gm)
             #pickMove(2,gm)
+        gm.checkKing()
         idx+=1
     if gm.cmate:
         print("Game over!")

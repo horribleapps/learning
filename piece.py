@@ -22,6 +22,7 @@ class Piece():
         self.locs=list()
         self.moveNum=0
         self.seeKing=False
+
     def availableMoves(self):
         print("No movement for base class")
 
@@ -61,9 +62,9 @@ class Piece():
         if cntr==len(intervals):
             self.seeKing=False
 
-
     def __str__(self):
         return self.__repr__()
+
     def __repr__(self):
         pcname= self.pctext[self.player][0]+\
                 self.name+self.pctext[self.player][1]
@@ -153,7 +154,6 @@ class Rook(Piece):
         self.availableLocs=trimIntervals
         self.checkKing(board)
         return trimIntervals
-
 
 class King(Piece):
 

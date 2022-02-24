@@ -42,14 +42,6 @@ class Player():
         }
         return piecesdict
 
-    def findKing(self,moves,plr):
-        moveList=list()
-        for m in moves:
-            x=m[0];y=m[1]
-            if (('King' in str(self.board[x][y])) and\
-                (self.board[x][y].player!=plr)):
-                moveList.append([x,y])
-        return moveList
 
     def removePiece(self,key):
         del self.pieces[key]

@@ -33,6 +33,8 @@ class Game():
         self.player2=None
         self.initplacePieces()
         self.printBoard()
+        self.cmate=False
+        self.check=False
 
     def initplacePieces(self):
         p1list=list();p2list=list()
@@ -96,4 +98,34 @@ class Game():
                 pc.x=x;pc.y=y
         self.printBoard()
 
-
+    def checkKing(self):
+        p1moves=list();p2moves=list()
+        #pdb.set_trace()
+        self.findKing(self.player1)
+        self.findKing(self.player2)
+    
+    def findKing(self,plr):
+        pmoves=list()
+        #pdb.set_trace()
+        for k in plr.pieces:
+            pmoves.extend(\
+            plr.pieces[k]\
+            .availableMoves(self.board))
+        #pdb.set_trace()
+        if len(pmoves) > 0:
+            idx=0
+            for i,j in pmoves:
+                if (self.board[i][j] is None):
+                    idx+=1
+                    continue
+                if (self.board[i][j].player != plr.playerNumber)\
+                    and \
+                    (str(self.board[i][j])=='King'):
+                    plr.check=True
+                else:
+                    idx+=1
+            if len(plr.pieces)==idx:
+                plr.check=True
+            else:
+                plr.check=False
+        pdb.set_trace()
