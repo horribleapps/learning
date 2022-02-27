@@ -42,7 +42,6 @@ class Player():
         }
         return piecesdict
 
-
     def removePiece(self,key):
         del self.pieces[key]
 

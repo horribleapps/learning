@@ -34,7 +34,8 @@ class Game():
         self.initplacePieces()
         self.printBoard()
         self.cmate=False
-        self.check=False
+        self.etp1=False #etp1=endTurnPlayer1
+        self.etp2=False #etp2=endTurnPlayer2
 
     def initplacePieces(self):
         p1list=list();p2list=list()
@@ -101,31 +102,68 @@ class Game():
     def checkKing(self):
         p1moves=list();p2moves=list()
         #pdb.set_trace()
-        self.findKing(self.player1)
-        self.findKing(self.player2)
+        print("check: player1, player2")
+        self.findKing(self.player1,self.player2)
+        print("check: player2, player1")
+        self.findKing(self.player2,self.player1)
     
-    def findKing(self,plr):
+    def findKing(self,plroi,opponent):
         pmoves=list()
-        #pdb.set_trace()
-        for k in plr.pieces:
+        pn=plroi.playerNumber
+        spn=str(plroi.playerNumber)
+        for k in opponent.pieces:
             pmoves.extend(\
-            plr.pieces[k]\
+            opponent.pieces[k]\
             .availableMoves(self.board))
-        #pdb.set_trace()
-        if len(pmoves) > 0:
-            idx=0
-            for i,j in pmoves:
-                if (self.board[i][j] is None):
-                    idx+=1
-                    continue
-                if (self.board[i][j].player != plr.playerNumber)\
-                    and \
-                    (str(self.board[i][j])=='King'):
-                    plr.check=True
-                else:
-                    idx+=1
-            if len(plr.pieces)==idx:
-                plr.check=True
+        kmoves=plroi.pieces['k1'+spn].availableMoves(self.board)
+        kxy=[[plroi.pieces['k1'+spn].x,plroi.pieces['k1'+spn].y]]
+        kplacesum=sum([x==kxy[0] for x in pmoves])
+        availKingMoves=self.comparearr(pmoves,kmoves)
+        if len(availKingMoves)==0 and len(kmoves)>0\
+            and\
+            kplacesum>0:
+            self.cmate=True
+        elif len(kmoves)!=len(availKingMoves)\
+            and\
+            kplacesum>0:
+            plroi.check=True
+        elif kplacesum>0:
+            plroi.check=True
+        else:
+            plroi.check=False
+
+        
+    def comparearr(self,pmoves,kmoves):
+        ka=list()
+        cntr=0
+        for k in kmoves:
+            for p in pmoves:
+                if p!=k:
+                    cntr+=1
+            if cntr==len(pmoves):
+                ka.append(k)
+                cntr=0
+        return ka
+
+    def moveOk(self,pc,mv,chk):
+        i=mv[0];j=mv[1]
+        x=pc[0];y=pc[1]
+        print("PC: "+str(pc))
+        print("mv: "+str(mv))
+        if self.board[x][y] is None:
+            return False
+        if chk==True:
+            #pdb.set_trace()
+            if 'King' not in str(self.board[x][y]):
+                return False
+        if (i>=0 and i <8) and (j>=0 and j <8):            
+            if   (self.board[i][j] is None):
+                return True
+            elif ( self.board[x][y].player\
+               !=self.board[i][j].player):
+                return True
             else:
-                plr.check=False
-        pdb.set_trace()
+                return False
+        else:
+            return False
+

@@ -25,8 +25,8 @@
 1
 |   0     |    1     |    2     |    3     |    4     |    5     |    6     |    7     | 
 | [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
-| [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  1 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  2 
+| [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
+|  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  5 
@@ -54,8 +54,8 @@
 |  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  5 
-| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
+|  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
+| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |   None   |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
 | =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  | =Bishop= | =Knight= |  =Rook=  |  7 
 ==============================
 ==============================
@@ -74,9 +74,9 @@
 ==============================
 1
 |   0     |    1     |    2     |    3     |    4     |    5     |    6     |    7     | 
-| [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
+| [Rook]  |   None   | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
 | [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
-|  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
+|[Knight] |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
 |  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
@@ -105,8 +105,8 @@
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
 |  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
-| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |   None   |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
-| =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  | =Bishop= | =Knight= |  =Rook=  |  7 
+| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  | =Bishop= |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
+| =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  |   None   | =Knight= |  =Rook=  |  7 
 ==============================
 ==============================
 ==============================
@@ -124,9 +124,9 @@
 ==============================
 1
 |   0     |    1     |    2     |    3     |    4     |    5     |    6     |    7     | 
-| [Rook]  |   None   | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
+| [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
 | [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
-|[Knight] |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
+|  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
 |  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
@@ -152,10 +152,10 @@
 | [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
 | [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
 |  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  3 
+|  None   |   None   |   None   |   None   |   None   |   None   |   None   | =Bishop= |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
 |  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
-| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  | =Bishop= |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
+| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |   None   |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
 | =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  |   None   | =Knight= |  =Rook=  |  7 
 ==============================
 ==============================
@@ -164,44 +164,6 @@
 | [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
 | [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
 |  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   | =Bishop= |  3 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
-|  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
-| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |   None   |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
-| =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  |   None   | =Knight= |  =Rook=  |  7 
-==============================
-==============================
-==============================
-1
-|   0     |    1     |    2     |    3     |    4     |    5     |    6     |    7     | 
-| [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
-| [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
-|  None   |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   | =Bishop= |  3 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
-|  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
-| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |   None   |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
-| =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  |   None   | =Knight= |  =Rook=  |  7 
-==============================
-==============================
-==============================
-|   0     |    1     |    2     |    3     |    4     |    5     |    6     |    7     | 
-| [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
-|  None   |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
-| [Pawn]  |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   | =Bishop= |  3 
-|  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
-|  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
-| =Pawn=  |  =Pawn=  |  =Pawn=  |  =Pawn=  |   None   |  =Pawn=  |  =Pawn=  |  =Pawn=  |  6 
-| =Rook=  | =Knight= | =Bishop= | =Queen=  |  =King=  |   None   | =Knight= |  =Rook=  |  7 
-==============================
-==============================
-==============================
-2
-|   0     |    1     |    2     |    3     |    4     |    5     |    6     |    7     | 
-| [Rook]  | [Knight] | [Bishop] | [Queen]  |  [King]  | [Bishop] | [Knight] |  [Rook]  |  0 
-|  None   |  [Pawn]  |  [Pawn]  |  [Pawn]  |  [Pawn]  |   None   |  [Pawn]  |  [Pawn]  |  1 
-| [Pawn]  |   None   |   None   |   None   |   None   |  [Pawn]  |   None   |   None   |  2 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   | =Bishop= |  3 
 |  None   |   None   |   None   |   None   |   None   |   None   |   None   |   None   |  4 
 |  None   |   None   |   None   |   None   |  =Pawn=  |   None   |   None   |   None   |  5 
