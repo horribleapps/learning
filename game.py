@@ -123,7 +123,7 @@ def openTextFile(pn):
     f.close()    
 
 def main():
-    '''#check
+    #check
     moveslist={'1': [\
                     [[1,5],[2,5]],\
                     [[1,3],[2,3]],\
@@ -140,12 +140,12 @@ def main():
                     [[3,7],[0,4]],
                     [[7,1],[5,0]],
                     ],\
-               }'''
+               }
 
-    #checkmate
+    '''#checkmate
     moveslist={'1':[[[1,5],[2,5]],[[0,1],[2,0]],[[2,0],[0,1]],],\
                '2':[[[6,4],[5,4]],[[7,5],[6,4]],[[6,4],[3,7]],],\
-               }
+               }'''
     gm=Game()
     cm=False
     idx=0
@@ -154,8 +154,6 @@ def main():
     gm.printBoard()
     print("\n\n\n")
     while(gm.cmate==False):
-    #for idx,(p1,p2) in enumerate(zip(moveslist['1'],moveslist['2'])):
-        #pdb.set_trace()
         while(  (\
                 (gm.etp1==False) \
                 or \
@@ -168,21 +166,14 @@ def main():
             pc=p1[0];mv=p1[1]
             openTextFile(1)
             movebool=gm.moveOk(pc,mv,gm.player1.check)
-            if idx==2:
-                x=1#pdb.set_trace()
             if movebool==True:
                 gm.updateMove(mv,gm.board[pc[0]][pc[1]])
                 gm.checkKing()
                 gm.etp1=False if gm.player1.check==True else True
-                #if gm.player1.check==True:
-                #    x=1#pdb.set_trace()
-                #if gm.player1.check==False:
-                #    gm.etp1=True
             elif movebool==False:
                 idx1+=1
             gm.printBoard()
             print("\n\n\n")
-            #pdb.set_trace()
         gm.etp1=False
         idx1+=1
         while(  (\
@@ -197,23 +188,16 @@ def main():
             pc=p2[0];mv=p2[1]
             openTextFile(2)
             movebool=gm.moveOk(pc,mv,gm.player2.check)
-            if idx>=2:
-                x=1#pdb.set_trace
             if (movebool==True):
                 gm.updateMove(mv,gm.board[pc[0]][pc[1]])
                 gm.checkKing()
                 gm.etp2=False if gm.player2.check==True else True
-                #if gm.player2.check==False:
-                #    gm.etp2=True
             elif movebool==False:
                 idx2+=1
             gm.printBoard()
             print("\n\n\n")
-            #if idx==2:
-            #    pdb.set_trace()
         gm.etp2=False
         idx2+=1
-        #pdb.set_trace()
     if gm.cmate==True:
         print("\n\nCheckmate!")
 

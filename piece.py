@@ -129,7 +129,6 @@ class Pawn(Piece):
         return locs
 
 class Rook(Piece):
-    
 
     def availableMoves(self,board):
         #print("rook")

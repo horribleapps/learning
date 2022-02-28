@@ -131,8 +131,7 @@ class Game():
             plroi.check=True
         else:
             plroi.check=False
-
-        
+ 
     def comparearr(self,pmoves,kmoves):
         ka=list()
         cntr=0
